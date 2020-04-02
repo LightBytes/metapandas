@@ -31,7 +31,7 @@ parser.read('%s/setup.cfg' % here)
 config = read_configuration('%s/setup.cfg' % here)
 metadata = config['metadata']
 metadata['summary'] = metadata.get('summary', metadata['description'].split('\n')[0])
-if setup_kwargs['pbr'] is not True:
+if setup_kwargs.pop('pbr', False) is not True:
     setup_kwargs.update(metadata)
     install_requirements = [line.split('#')[0].strip(' ')
                             for line in open('%s/requirements.txt' % here).readlines()
