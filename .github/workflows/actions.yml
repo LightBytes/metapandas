@@ -1,0 +1,38 @@
+
+
+- jobs:
+  build:
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: [ubuntu-latest, macos-latest, windows-latest]
+        python-version: [3.5, 3.6, 3.7, 3.8, pypy3]
+        exclude:
+          - os: macos-latest
+            python-version: 3.8
+          - os: windows-latest
+            python-version: 3.8
+    steps:
+      - uses: actions/checkout@v2
+      - name: Set up Python
+        uses: actions/setup-python@v1
+        with:
+          python-version: ${{ matrix.python-version }}
+      - name: Display Python version
+        run: python -c "import sys; print(sys.version)"
+
+  checks:
+    steps:
+      - uses: jpetrucciani/bandit-check@master
+        with:
+          path: '.'
+
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Publish package
+        if: github.event_name == 'push' && startsWith(github.event.ref, 'refs/tags')
+        uses: pypa/gh-action-pypi-publish@master
+        with:
+          user: __token__
+          password: ${{ secrets.pypi_password }}
