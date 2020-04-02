@@ -26,7 +26,7 @@ yapf  # format code according to style guide
 eradicate  # removes commented out dead code
 pycycle  # checks for circular imports
 isort  # order of imports
-typycal  # generates type stubs from inference e.g. unit tests
+typycal; python_version >= "3.6"
 
 pyroma  # tool for checking a package's best practices
 check-manifest  # checks MANIFEST.in and setup.py for issues
