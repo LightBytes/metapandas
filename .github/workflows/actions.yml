@@ -1,4 +1,12 @@
-- jobs:
+name: Python CI
+
+on:
+  push:
+    branches: [ master ]
+  pull_request:
+    branches: [ master ]
+
+jobs:
   build:
     runs-on: ${{ matrix.os }}
     strategy:
@@ -19,11 +27,12 @@
       - name: Display Python version
         run: python -c "import sys; print(sys.version)"
 
-  # checks:
-  #   steps:
-  #     - uses: jpetrucciani/bandit-check@master
-  #       with:
-  #         path: '.'
+  checks:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: jpetrucciani/bandit-check@master
+        with:
+          path: '.'
 
   deploy:
     runs-on: ubuntu-latest
