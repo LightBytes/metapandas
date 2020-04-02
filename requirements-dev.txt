@@ -39,7 +39,7 @@ pydeps
 
 # documentation
 docutils  #==0.14
-pycodestyle<=2.4.0  # prospector==1.2.0 is incompatible with pycodestyle==2.5.0
+pycodestyle  # prospector==1.2.0 is incompatible with pycodestyle==2.5.0
 doc8
 numpydoc
 sphinx-autodoc-typehints
