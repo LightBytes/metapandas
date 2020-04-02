@@ -32,18 +32,31 @@ jobs:
             python-version: pypy3
     steps:
       - uses: actions/checkout@v2
+
       - name: Set up Python
         uses: actions/setup-python@v1
         with:
           python-version: ${{ matrix.python-version }}
+
       - name: Display Python version
         run: python -c "import sys; print(sys.version)"
 
+      - name: Install development requirements
+        run: |
+          pip install -r requirements-dev.txt
+
+      - name: Install testing requirements
+        run: |
+          pip install -r requirements-test.txt
+
+      - name: Install requirements
+        run: |
+          pip install -r requirements.txt
+
       - name: Generate coverage report
         run: |
-          pip install pytest
-          pip install pytest-cov
           pytest --cov=metapandas/ --cov-report=xml
+
       - name: Upload coverage to Codecov  
         uses: codecov/codecov-action@v1
         with:
