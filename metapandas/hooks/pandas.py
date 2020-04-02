@@ -1,4 +1,4 @@
-from funtools import wraps
+from functools import wraps
 
 import os
 import sys

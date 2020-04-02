@@ -1,0 +1,1 @@
+from metapandas.hooks import pandas

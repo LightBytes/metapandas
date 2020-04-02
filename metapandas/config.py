@@ -2,10 +2,10 @@ from collections import defaultdict
 import os
 
 def parse_env_flag(var, var_default=None, cast=int, cast_default=0):
-    return cast(os.environ.get(var, var_default) or cast_default))
+    return cast(os.environ.get(var, var_default) or cast_default)
 
 
-VERBOSE = parse_env_flag('METAPANDAS_VERBOSITY')
+VERBOSE = parse_env_flag('METAPANDAS_VERBOSITY', 1)
 
 INCLUDE_APT_PACKAGES = parse_env_flag('METAPANDAS_INCLUDE_APT_PACKAGES', 1)
 INCLUDE_BREW_PACKAGES = parse_env_flag('METAPANDAS_INCLUDE_BREW_PACKAGES', 1)

@@ -1,3 +1,7 @@
+import re
+from typing import Optional
+
+
 class HooksManager:
     """A hooks class."""
 
