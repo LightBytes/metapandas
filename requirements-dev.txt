@@ -1,7 +1,7 @@
 # essentials
 twine
 sphinx
-setuptools
+setuptools>=37
 cython
 cython-setuptools
 setuptools-cythonize
@@ -19,7 +19,7 @@ yolk3k  # get status of development
 
 # linters
 pylama
-prospector
+#prospector  # conflicts with pycodestyle, needs an update to PyPI
 yapf  # format code according to style guide
 
 # checkers
