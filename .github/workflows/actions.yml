@@ -56,8 +56,7 @@ jobs:
 
       - name: Generate coverage report
         run: |
-          export PYTHONPATH="${PYTHONPATH}:./"
-          pytest --cov=metapandas/ --cov-report=xml
+          PYTHONPATH=. pytest --cov=metapandas/ --cov-report=xml
         shell: bash
 
       - name: Upload coverage to Codecov  
