@@ -21,11 +21,11 @@
       - name: Display Python version
         run: python -c "import sys; print(sys.version)"
 
-  checks:
-    steps:
-      - uses: jpetrucciani/bandit-check@master
-        with:
-          path: '.'
+  # checks:
+  #   steps:
+  #     - uses: jpetrucciani/bandit-check@master
+  #       with:
+  #         path: '.'
 
   deploy:
     runs-on: ubuntu-latest
