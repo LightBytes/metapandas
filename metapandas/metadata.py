@@ -16,11 +16,19 @@ import warnings
 import subprocess
 import inspect
 
-import psutil
-import cpuinfo
-
 import pandas as pd
 
+try:
+    import psutil
+except (ImportError, PermissionError):
+    warnings.warn('Unable to use psutil, maybe because it requires elevated privaledges')
+    psutil = None
+
+try:
+    import cpuinfo
+except (ImportError, PermissionError):
+    warnings.warn('Unable to use cpuinfo, maybe because it requires elevated privaledges')
+    cpuinfo = None
 
 try:
     import jsonpickle as json  # handle many arbitrary python objects
@@ -164,7 +172,7 @@ class MetaData:
         """
         self.actions[str(on)][str(datetime.datetime.now())
                               ][action] += (description.strip('\n') + '\n' if description else '')
-        return [f"{k}: {[f'<{ki}> {vi}' for ki, vi in v.items()]}" for k, v in self.actions[str(on)].items()]
+        return ["{}: {}".format(k, ['<{ki}> {vi}'.format(**locals()) for ki, vi in v.items()]) for k, v in self.actions[str(on)].items()]
 
     @classmethod
     def merge(cls, left: Dict[str, Any], right: Dict[str, Any], sep='; ') -> Dict[str, Any]:
@@ -175,7 +183,7 @@ class MetaData:
         for key in [key for key in set(list(left.keys()) + list(right.keys()))
                     if key in left and key in right]:
             if isinstance(merged[key], str):
-                merged[key] = f'{left[key]}{sep}{right[key]}'
+                merged[key] = '{left[key]}{sep}{right[key]}'.format(**locals())
             elif isinstance(merged[key], (list, tuple)):
                 merged[key] = list(left[key]) + list(right[key])
             elif isinstance(merged[key], dict):
@@ -199,12 +207,16 @@ class MetaData:
             'python-executable': sys.executable,
             'python-version': platform.python_version(),
             'python-implementation': platform.python_implementation(),
-            'python-command': ' '.join(sys.argv),
-            'cpu-cores': psutil.cpu_count(logical=False),
-            'cpu-threads': psutil.cpu_count(logical=True),
-            'environment-variables': {k: v for k, v in os.environ.items()
-                                      if not re.match('.*(KEY|PASSWORD|TOKEN).*', k.upper())},
+            'python-command': ' '.join(sys.argv)
         }
+
+        if psutil:
+            metadata.update({
+                'cpu-cores': psutil.cpu_count(logical=False),
+                'cpu-threads': psutil.cpu_count(logical=True),
+            })
+        metadata['environment-variables'] = {k: v for k, v in os.environ.items()
+                                             if not re.match('.*(KEY|PASSWORD|TOKEN).*', k.upper())}
         try:
             os_ver = {
                 'Linux': platform.linux_distribution,
@@ -216,8 +228,11 @@ class MetaData:
                 metadata['system'] = ' '.join(map(str, os_ver[platform.system()]()))
         except AttributeError:
             pass
-        metadata['cpu'] = ' @ '.join([v for k, v in cpuinfo.get_cpu_info().items()
-                                      if k in ['brand', 'hz_advertised']])
+ 
+        if cpuinfo:
+            metadata['cpu'] = ' @ '.join([v for k, v in cpuinfo.get_cpu_info().items()
+                                          if k in ['brand', 'hz_advertised']])
+ 
         conda_prefix = os.environ.get('CONDA_PREFIX', None)
         if conda_prefix:
             metadata['conda-environment'] = Path(conda_prefix).name
@@ -229,13 +244,13 @@ class MetaData:
             try:
                 metadata['brew-packages'] = self.list_brew_packages().set_index('name').version.to_dict()
             except Exception as err:
-                self.logger.error(f'Unable to establish brew packages used due to "{err}"')
+                self.logger.error('Unable to establish brew packages used due to "{}"'.format(err))
         try:
             metadata['python-packages'] = {k: str(getattr(v, '__version__', None))
                                            for k, v in sys.modules.items()
                                            if hasattr(v, '__version__') and not k.startswith('_')}
         except Exception as err:
-            self.logger.error(f'Unable to establish python packages used due to "{err}"')
+            self.logger.error('Unable to establish python packages used due to "{}"'.format(err))
 
         if self.actions:
             metadata['processing-actions'] = self.actions
