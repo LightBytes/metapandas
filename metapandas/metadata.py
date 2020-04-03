@@ -299,6 +299,7 @@ class MetaData:
                     try:
                         original_data = json.loads(f.read())
                     except JSONDecodeError as err:
+                        original_data = {}
                         if errors == 'raise':
                             raise
                         elif errors == 'warn':
