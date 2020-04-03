@@ -13,7 +13,7 @@ def _vprint(level='info', *args, **kwargs):
 def get_major_minor_version(module):
     """Return a float of the major.minor version release of module or None."""
     try:
-        version = float('.'.join(getattr(module.__version__.split('.')[:2])))
+        version = float('.'.join(module.__version__.split('.')[:2]))
     except AttributeError:
         version = None
     return version
