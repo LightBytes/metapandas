@@ -4,7 +4,7 @@ from metapandas.config import VERBOSE, JSON_DUMPS_KWARGS
 import sys
 
 
-def _vprint(level='info', *args, **kwargs):
+def _vprint(*args, **kwargs):
     """Print only when VERBOSE evaulates to true within config."""
     if VERBOSE:
         print(*args, **kwargs)
