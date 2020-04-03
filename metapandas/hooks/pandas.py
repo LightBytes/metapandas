@@ -3,9 +3,7 @@ from functools import wraps
 from contextlib import redirect_stdout, redirect_stderr
 
 import os
-import re
 import sys
-import warnings
 import inspect
 
 import pandas as pd
@@ -50,7 +48,7 @@ def pandas_read_with_metadata(function=None, argname='path', **meta_kwargs):
                         })
                         metadata.update(json.loads(metafile.read()))
             except Exception as err:
-                warnings.warn('Could not load metadata from {} due to {!r}'.format(metapath, err))
+                _vprint('Could not load metadata from {} due to {!r}'.format(metapath, err), file=sys.stderr)
             finally:
                 result.metadata = metadata
             return result
@@ -78,11 +76,12 @@ def pandas_save_with_metadata(function=None, argname='path',
             })
             additional_data.update()
             result = func(*args, **kwargs)
+            metapath = None
             try:
                 datapath = kwargs.get(
                     argname, args[0] if not isinstance(
                         args[0], (pd.DataFrame, pd.Series)) else args[1])
-                metapath = re.sub('/', os.sep, str(datapath).replace('/', os.sep) + '.meta.json')
+                metapath = str(datapath).replace('/', os.sep) + '.meta.json'
                 additional_data['storage'].update({
                     'data_filepath': datapath,
                     'metadata_filepath': metapath,
@@ -90,7 +89,7 @@ def pandas_save_with_metadata(function=None, argname='path',
                 metadata.save_as_json(filepath=metapath, data=data,
                                       additional_data=additional_data)
             except Exception as err:
-                warnings.warn('Could not save metadata to {} due to {!r}'.format(metapath, err))
+                _vprint('Could not save metadata to {} due to {!r}'.format(metapath, err), file=sys.stderr)
                 raise
             return result
         return wrapper
@@ -168,5 +167,5 @@ with open(os.devnull, 'w') as devnull:
 for method, meta_kwargs in PandasMetaDataHooks.PANDAS_READ_HOOKS.items():
     func_method = getattr(pd, method, None)
     if func_method is None:
-        warnings.warn('No such attribute to decorate: "pd.{}"'.format(method))
+        _vprint('Warning: No such attribute to decorate: "pd.{}"'.format(method), file=sys.stderr)
     globals()[method] = pandas_read_with_metadata(func_method, **meta_kwargs)
