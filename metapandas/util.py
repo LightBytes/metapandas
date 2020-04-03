@@ -1,7 +1,9 @@
 """Provide utility functions used elsewhere in this package."""
-from metapandas.config import VERBOSE, JSON_DUMPS_KWARGS
-
 import sys
+import re
+
+from typing import Optional
+from metapandas.config import VERBOSE, JSON_DUMPS_KWARGS
 
 
 def _vprint(*args, **kwargs):
@@ -10,13 +12,29 @@ def _vprint(*args, **kwargs):
         print(*args, **kwargs)
 
 
-def get_major_minor_version(module):
+def snake_case(string: str) -> str:
+    """Convert upper camelcase to snake case."""
+    return re.sub(r'(?<!^)(?=[A-Z])', '_', string)
+
+
+def friendly_symbol_name(obj) -> str:
+    """Return a friendly symbol name for obj."""
+    obj_name = obj.__name__ if str(type(obj)) == "<class 'module'>" else obj
+    return re.sub("(<|class|function| at [0-9]x[0-9A-F]{8,}|'|>)", '', str(obj_name))
+
+
+def get_major_minor_version(module) -> Optional[float]:
     """Return a float of the major.minor version release of module or None."""
     try:
         version = float('.'.join(module.__version__.split('.')[:2]))
     except AttributeError:
         version = None
     return version
+
+
+def mangle(name: str, prefix: str = '', suffix: str = '_original') -> str:
+    """Return mangled name."""
+    return '{prefix}{name}{suffix}'.format(**locals())
 
 
 def get_json_dumps_kwargs(json):
