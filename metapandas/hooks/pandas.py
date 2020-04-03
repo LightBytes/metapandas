@@ -165,4 +165,7 @@ with open(os.devnull, 'w') as devnull:
 
 # add decorated pandas methods to module symbols
 for method, meta_kwargs in PandasMetaDataHooks.PANDAS_READ_HOOKS.items():
-    globals()[method] = pandas_read_with_metadata(getattr(pd, method), **meta_kwargs)
+    func_method = getattr(pd, method, None)
+    if func_method is None:
+        warnings.warn('No such attribute to decorate: "pd.{}"'.format(method))
+    globals()[method] = pandas_read_with_metadata(func_method, **meta_kwargs)
