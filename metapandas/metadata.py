@@ -13,8 +13,7 @@ import getpass
 import logging
 import datetime
 import warnings
-import subprocess
-import inspect
+import subprocess  # nosec
 
 import pandas as pd
 
@@ -83,7 +82,7 @@ class MetaData:
         """
         try:
             pkgs = subprocess.check_output(cmd, shell=True, stderr=subprocess.PIPE)\
-                             .decode('utf8', errors='ignore')
+                             .decode('utf8', errors='ignore')  # nosec
             lines = re.split('[\r\n]+', re.sub('[ \t]+', ',', pkgs))[ignore_first_n_lines:]
             data = [line.split(',')[:len(columns)] for line in lines if line.strip()]
         except subprocess.CalledProcessError:
@@ -92,7 +91,7 @@ class MetaData:
 
     @classmethod
     def list_conda_packages(cls) -> pd.DataFrame:
-        """Lists Conda packages as a pandas DataFrame.
+        """List Conda packages as a pandas DataFrame.
 
         Returns
         -------
@@ -113,7 +112,7 @@ class MetaData:
 
     @classmethod
     def list_brew_packages(cls) -> pd.DataFrame:
-        """Lists Brew packages as a pandas DataFrame.
+        """List Brew packages as a pandas DataFrame.
 
         Returns
         -------
@@ -132,7 +131,7 @@ class MetaData:
 
     @classmethod
     def list_apt_packages(cls) -> pd.DataFrame:
-        """Lists Debian APT packages as a pandas DataFrame.
+        """List Debian APT packages as a pandas DataFrame.
 
         Returns
         -------
@@ -172,7 +171,8 @@ class MetaData:
         """
         self.actions[str(on)][str(datetime.datetime.now())
                               ][action] += (description.strip('\n') + '\n' if description else '')
-        return ["{}: {}".format(k, ['<{ki}> {vi}'.format(**locals()) for ki, vi in v.items()]) for k, v in self.actions[str(on)].items()]
+        return ["{}: {}".format(k, ['<{ki}> {vi}'.format(**locals()) for ki, vi in v.items()])
+                for k, v in self.actions[str(on)].items()]
 
     @classmethod
     def merge(cls, left: Dict[str, Any], right: Dict[str, Any], sep='; ') -> Dict[str, Any]:
@@ -191,7 +191,7 @@ class MetaData:
         return merged
 
     def get_metadata(self) -> Dict[str, Any]:
-        """Creates a metadata dictionary or tagging generated data with.
+        """Create a metadata dictionary or tagging generated data with.
 
         Returns
         -------
@@ -228,11 +228,11 @@ class MetaData:
                 metadata['system'] = ' '.join(map(str, os_ver[platform.system()]()))
         except AttributeError:
             pass
- 
+
         if cpuinfo:
             metadata['cpu'] = ' @ '.join([v for k, v in cpuinfo.get_cpu_info().items()
                                           if k in ['brand', 'hz_advertised']])
- 
+
         conda_prefix = os.environ.get('CONDA_PREFIX', None)
         if conda_prefix:
             metadata['conda-environment'] = Path(conda_prefix).name
@@ -262,7 +262,7 @@ class MetaData:
                      additional_data: Optional[dict] = None,
                      exists_action: str = 'merge',
                      errors: str = 'warn'):
-        """Saves metadata in JSON format to disk with optional additional data.
+        """Save metadata in JSON format to disk with optional additional data.
 
         Parameters
         ----------

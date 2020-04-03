@@ -1,8 +1,13 @@
+"""Provides decorator functions for modifying pandas."""
 from functools import wraps
 
 import os
 import sys
 import warnings
+import inspect
+
+import pandas as pd
+import jsonpickle as json
 
 from metapandas.util import _vprint
 from metapandas.metadata import MetaData
@@ -34,11 +39,11 @@ def pandas_read_with_metadata(function=None, argname='path', **meta_kwargs):
                 else:
                     datapath = kwargs.get(argname, args[0])
                     metapath = str(datapath).replace('/', os.sep) + '.meta.json'
-                    
+
                     # load additional metadata and combine
                     with open(metapath) as metafile:
                         metadata.update({
-                            'data_filepath': datapath, 
+                            'data_filepath': datapath,
                             'metadata_filepath': metapath
                         })
                         metadata.update(json.loads(metafile.read()))
@@ -56,7 +61,7 @@ def pandas_save_with_metadata(function=None, argname='path',
                               metadata=MetaData(), **meta_kwargs):
     """Decorate a pandas.to_*() function to additionally store metadata."""
     data = meta_kwargs.pop('data', None)
-    
+
     def decorator(func):
         @wraps(func)
         def wrapper(*args, **kwargs):
@@ -72,7 +77,9 @@ def pandas_save_with_metadata(function=None, argname='path',
             additional_data.update()
             result = func(*args, **kwargs)
             try:
-                datapath = kwargs.get(argname, args[0] if not isinstance(args[0], (pd.DataFrame, pd.Series)) else args[1])
+                datapath = kwargs.get(
+                    argname, args[0] if not isinstance(
+                        args[0], (pd.DataFrame, pd.Series)) else args[1])
                 metapath = str(datapath).replace('/', os.sep) + '.meta.json'
                 additional_data['storage'].update({
                     'data_filepath': datapath,
@@ -91,17 +98,18 @@ def pandas_save_with_metadata(function=None, argname='path',
 
 class PandasMetaDataHooks(HooksManager):
     """Class for handling MetaData transparently alongside ordinary Pandas using method decorators.
-    
+
     Attributes
     ----------
     PANDAS_DATAFRAME_SAVE_HOOKS: Dict[str, dict]
         A dictionary of pandas.DataFrame method names as keys and kwargs as
-        the values to pass to the pandas_save_with_metadata() decorator. 
+        the values to pass to the pandas_save_with_metadata() decorator.
     PANDAS_READ_HOOKS: Dict[str, dict]
         A dictionary of pandas module-level method names as keys and kwargs as
         the values to pass to the pandas_read_with_metadata() decorator.
 
     """
+
     PANDAS_DATAFRAME_SAVE_HOOKS = {
         'to_csv': {'argname': 'path_or_buf'},
         'to_excel': {'argname': 'excel_writer'},

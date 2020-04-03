@@ -1,18 +1,27 @@
+"""Defines MetaDataFrame class, which extends pandas.DataFrame."""
 import pandas as pd
 
 
 class MetaDataFrame(pd.DataFrame):
     """A specialised DataFrame class for tracking metadata.
-    
+
     Examples
     --------
     >>> from nats.utils.datasets.processing.metadata import MetaDataFrame
     >>> MetaDataFrame([1, 2, 3], columns='a')
-    
+
     """
     _metadata = ['metadata']  # lists properites which should be passed to copies
 
     def __init__(self, *args, **kwargs):
+        """Wrapped pd.DataFrame.__init__.
+        
+        Notes
+        -----
+        The keyword argument :code:`metadata` can be used to
+        initialise the MetaDataFrame.metadata dictionary.
+        
+        """
         metadata = kwargs.pop('metadata', {})
         super(MetaDataFrame, self).__init__(*args, **kwargs)
         metadata.update({

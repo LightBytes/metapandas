@@ -1,3 +1,4 @@
+"""This module defines a HooksManager class for handling (de)installation of decorators."""
 import re
 from typing import Optional
 
@@ -13,10 +14,34 @@ class HooksManager:
     @classmethod
     def apply_hooks(cls, obj, decorator_function, hooks_dict,
                     flag_var: Optional[str] = None,
-                    mangled_prefix: str = '', mangled_suffix: str = '_original'):
+                    mangled_prefix: str = '', mangled_suffix: str = '_original') -> bool:
+        """Apply hooks to obj using decorator_function.
+
+        Parameters
+        ----------
+        obj: Any
+            A mutable python module, class or function to decorate.
+        decorator_function: Callable
+            The decorator function to apply.
+        hooks_dict: Dict[str, Dict[str, Any]]
+            A dictionary of obj properties to modify with each
+            entry defining a set of kwargs to use for the decorator_function.
+        flag_var: str or None
+            A handle to journal the hook installation/deinstallation.
+        managed_prefix: str
+            The prefix to use for a new handle to the original decorated property.
+        mangled_suffix: str
+            The suffix to use for a new handle to the original decorated property.
+
+        Returns
+        -------
+        bool
+            Indicator of whether hooks were successfully installed.
+
+        """
         flag_var = flag_var or cls._generate_hook_flag_varname()
         # only apply decorators if not already done so
-        # this prevents clobbering the original methods when called multiple times        
+        # this prevents clobbering the original methods when called multiple times
         applied = False
         if not getattr(obj, flag_var, None):
             for method_name, decorator_kwargs in hooks_dict.items():
@@ -30,10 +55,31 @@ class HooksManager:
             setattr(obj, flag_var, True)
             applied = True
         return applied
-    
+
     @classmethod
     def remove_hooks(cls, obj, hooks_dict, flag_var: Optional[str] = None,
                      mangled_prefix: str = '', mangled_suffix: str = '_original'):
+        """Remove hooks from obj.
+
+        Parameters
+        ----------
+        obj: Any
+            A mutable python module, class or function to decorate.
+        hooks_dict: Dict[str, Dict[str, Any]]
+            A dictionary of obj modified properties.
+        flag_var: str or None
+            A handle to journal the hook installation/deinstallation.
+        managed_prefix: str
+            The prefix used for the original decorated property.
+        mangled_suffix: str
+            The suffix used for the original decorated property.
+
+        Returns
+        -------
+        bool
+            Indicator of whether hooks were successfully uninstalled.
+
+        """
         flag_var = flag_var or cls._generate_hook_flag_varname()
         # only remove decorators if needed
         applied = False

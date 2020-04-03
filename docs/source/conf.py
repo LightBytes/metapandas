@@ -153,15 +153,15 @@ graphviz_output_format = 'svg'
 
 # Intersphinx mapping
 intersphinx_mapping = {
-   'python': ('http://docs.python.org/', None),
-   'sphinx': ('http://sphinx.pocoo.org', None),
-   'astropy': ('http://docs.astropy.org/en/latest/', None),
-   'navpy': ('https://navpy.readthedocs.io/en/latest/', None),
-   'pint': ('https://pint.readthedocs.io/en/latest/', None),
-   'numpy': ('http://docs.scipy.org/doc/numpy/', None),
-   'scipy': ('http://docs.scipy.org/doc/scipy/reference/', None),
-   'matplotlib': ('http://matplotlib.sourceforge.net/', None),
-   'pandas': ('http://pandas.pydata.org/pandas-docs/stable/', None)
+    'python': ('http://docs.python.org/', None),
+    'sphinx': ('http://sphinx.pocoo.org', None),
+    'astropy': ('http://docs.astropy.org/en/latest/', None),
+    'navpy': ('https://navpy.readthedocs.io/en/latest/', None),
+    'pint': ('https://pint.readthedocs.io/en/latest/', None),
+    'numpy': ('http://docs.scipy.org/doc/numpy/', None),
+    'scipy': ('http://docs.scipy.org/doc/scipy/reference/', None),
+    'matplotlib': ('http://matplotlib.sourceforge.net/', None),
+    'pandas': ('http://pandas.pydata.org/pandas-docs/stable/', None)
 }
 
 # -- Options for HTML output -------------------------------------------------
@@ -308,9 +308,9 @@ docx_coreproperties = {
     'copyright': copyright
 }
 docx_documents = [(master_doc, project, {
-        'title': '{} {} Documentation'.format(project, release),
-        'author': author,
-    }),
+    'title': '{} {} Documentation'.format(project, release),
+    'author': author,
+}),
 ]
 docx_pagebreak_level = 2  # insert page break before each heading 1, 2 & title
 docx_imagetable_align = 'center'  # 'left', 'center', or 'right'
@@ -335,7 +335,7 @@ jupyter_kernels = {
             "display_name": "Python",
             "language": "python3",
             "name": "python3"
-            },
+        },
         "file_extension": ".py",
     }
 }
