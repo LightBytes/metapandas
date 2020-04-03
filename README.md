@@ -1,2 +1,137 @@
 # metapandas
-Track metadata when using pandas via JSON
+Track metadata when using pandas via JSON.
+
+This both extends the pandas `DataFrame` with a `MetaDataFrame` class and
+can decorate commonly used pandas methods for retrieving/storing data to
+include metadata by default.
+
+```python
+>>> import numpy as np
+>>> import metapandas as mpd
+>>> data = np.arange(9).reshape(3, 3)
+>>> mdf = mpd.MetaDataFrame(data, columns=list('abc'), metadata={})
+>>> from pprint import pprint
+>>> pprint(mdf.metadata)
+{'constructor': {'args': (array([[0, 1, 2],
+       [3, 4, 5],
+       [6, 7, 8]]),),
+                 'class': <class 'metapandas.metadataframe.MetaDataFrame'>,
+                 'kwargs': {'columns': ['a', 'b', 'c']}}}
+
+# metadata is preserved when copied
+>>> mdf.metadata['test'] = True
+>>> mdf.copy().metadata.get('test')
+True
+
+# metadata is stored in a JSON when saving the dataframe to disk
+>>> mdf.to_csv('test.csv', index=False)
+>>> from pathlib import Path
+>>> list(map(str, Path('.').glob('test.csv*')))
+['test.csv', 'test.csv.meta.json']
+
+# metadata is automatically loaded when pandas hooks are installed
+>>> print("!TODO!")
+
+```
+
+Pandas modification can be performed by importing the `auto` module as follows:
+
+```
+>>> import metapandas.auto
+Applied hook for metapandas.metadataframe.MetaDataFrame.to_csv
+Applied hook for metapandas.metadataframe.MetaDataFrame.to_excel
+Applied hook for metapandas.metadataframe.MetaDataFrame.to_feather
+Applied hook for metapandas.metadataframe.MetaDataFrame.to_hdf
+Applied hook for metapandas.metadataframe.MetaDataFrame.to_json
+Applied hook for metapandas.metadataframe.MetaDataFrame.to_parquet
+Applied hook for metapandas.metadataframe.MetaDataFrame.to_pickle
+Applied hook for pandas.read_csv
+Applied hook for pandas.read_excel
+Applied hook for pandas.read_feather
+Applied hook for pandas.read_hdf
+Applied hook for pandas.read_json
+Applied hook for pandas.read_parquet
+Applied hook for pandas.read_pickle
+Applied hook for pandas.read_sql
+Applied hook for pandas.read_sql_table
+Applied hook for pandas.read_sql_query
+Applied hook for pandas.core.frame.DataFrame.to_csv
+Applied hook for pandas.core.frame.DataFrame.to_excel
+Applied hook for pandas.core.frame.DataFrame.to_feather
+Applied hook for pandas.core.frame.DataFrame.to_hdf
+Applied hook for pandas.core.frame.DataFrame.to_json
+Applied hook for pandas.core.frame.DataFrame.to_parquet
+Applied hook for pandas.core.frame.DataFrame.to_pickle
+Installed PandasMetaDataHooks hooks
+```
+
+## Installation
+
+MetaPandas itself is a pure python package, but depends on pandas and the SciPy
+stack. Note: It optionally uses geopandas as well, which is often difficult
+to install without `conda`.
+
+To install, simply try:
+
+```bash
+pip install metapandas
+```
+
+## Development
+
+To set up a development environment, first create either a new virtual or
+conda environment before activating it and then run the following:
+
+```bash
+git clone https://github.com/lightbytes/metapandas
+cd metapandas
+pip install -r requirements-dev.txt requirements-test.txt -r requirements.txt
+pip install -e .
+```
+
+This will install the package in development mode. Note that is you have forked
+the repo then change the URL as appropriate. 
+
+
+## Documentation
+
+Documentation can be found within the `docs/` directory. This project
+uses sphinx to autogenerate API documentation by scraping python docstrings.
+
+To generate the HTML documentation, simply do the following:
+
+```bash
+cd docs
+make html
+```
+
+### PDF generation
+
+PDF documentation is currently only supported on Ubuntu systems, but needs
+additional packages to run. These can be installed by:
+
+```bash
+cd docs
+chmod +x setup.sh
+./setup.sh
+```
+
+PDFs can then be created with `make pdf` from within the `docs/` directory.
+
+
+## Contribution Guidelines
+
+Contributions are extremely welcome and highly encouraged. To help with consistency
+please can the following areas be considered before submitting a PR for review:
+
+- Use `autopep8 -a -a -i -r .` to run over any modified files to ensure basic pep8 conformance,
+  allowing the code to be read in a style expected for most python projects.
+- New or changed functionality should be tested, running `pytest` should 
+- Try to document any new or changed functionality. Note: this project uses
+  [numpydoc](https://numpydoc.readthedocs.io/en/latest/format.html) for it's
+  docstring documentation style.
+
+
+## License
+
+Released under MIT license.
