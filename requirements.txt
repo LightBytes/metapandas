@@ -3,3 +3,4 @@ git+https://github.com/jsonpickle/jsonpickle  # needs a new PyPI release - see h
 #jsonpickle>=1.4
 py-cpuinfo; platform_system != "Windows"
 psutil
+loguru

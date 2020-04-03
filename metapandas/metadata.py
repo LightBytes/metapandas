@@ -17,22 +17,26 @@ import subprocess  # nosec
 
 import pandas as pd
 
+from loguru import logger
+
+from metapandas.util import _vprint, get_json_dumps_kwargs
+
 try:
     import psutil
 except (ImportError, PermissionError):
-    warnings.warn('Unable to use psutil, maybe because it requires elevated privaledges')
+    logger.error('Unable to use psutil, maybe because it requires elevated privaledges')
     psutil = None
 
 try:
     import cpuinfo
 except (ImportError, PermissionError):
-    warnings.warn('Unable to use cpuinfo, maybe because it requires elevated privaledges')
+    logger.error('Unable to use cpuinfo, maybe because it requires elevated privaledges')
     cpuinfo = None
 
 try:
     import jsonpickle as json  # handle many arbitrary python objects
 except ImportError:
-    warnings.warn('Full JSON serialisation not available - please pip install jsonpickle')
+    logger.error('Full JSON serialisation not available - please pip install jsonpickle')
     import json
 
 
@@ -311,4 +315,4 @@ class MetaData:
                 raise FileExistsError('{filepath} already exists'.format(**locals()))
 
         with open(filename, 'w') as f:
-            f.write(json.dumps(data, indent=2))
+            f.write(json.dumps(data, **get_json_dumps_kwargs(json)))

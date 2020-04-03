@@ -1,9 +1,11 @@
 """This module defines a HooksManager class for handling (de)installation of decorators."""
 import re
-import warnings
+import sys
 
 from typing import Optional
 from functools import partial
+
+from metapandas.util import _vprint
 
 
 class HooksManager:
@@ -55,7 +57,7 @@ class HooksManager:
                 obj_name = obj.__name__ if str(type(obj)) == "<class 'module'>" else obj
                 mangled_name = '{}{}{}'.format(mangled_prefix, method_name, mangled_suffix)
                 if not hasattr(obj, method_name):
-                    warnings.warn("Unable to decorate {}.{} with {}".format(obj_name, method_name, decorator_function))
+                    _vprint("Unable to decorate {}.{} with {}".format(obj_name, method_name, decorator_function), file=sys.stderr)
                 original_func = getattr(obj, method_name, partial(not_found, obj_name, method_name, decorator_function))
                 setattr(obj, method_name, decorator_function(original_func, **decorator_kwargs))
                 setattr(obj, mangled_name, original_func)
