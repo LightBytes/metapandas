@@ -287,10 +287,11 @@ class MetaData:
         data.update(additional_data or {})
 
         filepath = Path(filepath or self.filepath)
+        filename = str(filepath).replace('/', os.sep)  # protect from py35 Path -> str bug on Windows
 
         if filepath.exists():
             if exists_action == 'merge':
-                with open(filepath) as f:
+                with open(filename) as f:
                     try:
                         original_data = json.loads(f.read())
                     except JSONDecodeError as err:
@@ -309,5 +310,5 @@ class MetaData:
             elif exists_action == 'raise_error':
                 raise FileExistsError('{filepath} already exists'.format(**locals()))
 
-        with open(filepath, 'w') as f:
+        with open(filename, 'w') as f:
             f.write(json.dumps(data, indent=2))
