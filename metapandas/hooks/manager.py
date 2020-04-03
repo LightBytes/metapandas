@@ -1,6 +1,9 @@
 """This module defines a HooksManager class for handling (de)installation of decorators."""
 import re
+import warnings
+
 from typing import Optional
+from functools import partial
 
 
 class HooksManager:
@@ -43,13 +46,19 @@ class HooksManager:
         # only apply decorators if not already done so
         # this prevents clobbering the original methods when called multiple times
         applied = False
+
+        def not_found(obj_name, method_name, decorator_function, *args, **kwargs):
+            raise AttributeError("Unable to decorate {}.{} with {}".format(obj_name, method_name, decorator_function))
+
         if not getattr(obj, flag_var, None):
             for method_name, decorator_kwargs in hooks_dict.items():
-                original_func = getattr(obj, method_name)
-                setattr(obj, method_name, decorator_function(original_func, **decorator_kwargs))
-                mangled_name = '{}{}{}'.format(mangled_prefix, method_name, mangled_suffix)
-                setattr(obj, mangled_name, original_func)
                 obj_name = obj.__name__ if str(type(obj)) == "<class 'module'>" else obj
+                mangled_name = '{}{}{}'.format(mangled_prefix, method_name, mangled_suffix)
+                if not hasattr(obj, method_name):
+                    warnings.warn("Unable to decorate {}.{} with {}".format(obj_name, method_name, decorator_function))
+                original_func = getattr(obj, method_name, partial(not_found, obj_name, method_name, decorator_function))
+                setattr(obj, method_name, decorator_function(original_func, **decorator_kwargs))
+                setattr(obj, mangled_name, original_func)
                 print('Applied hook for {}.{}'.format(re.sub("(<class '|'>)", '', str(obj_name)), method_name))
             # mark as installed
             setattr(obj, flag_var, True)
