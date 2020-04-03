@@ -30,8 +30,36 @@ True
 ['test.csv', 'test.csv.meta.json']
 
 # metadata is automatically loaded when pandas hooks are installed
->>> print("!TODO!")
+# this is useful if you have existing pandas code that you want to augment with metadta
+>>> from metapandas.hooks.pandas import PandasMetaDataHooks
+>>> from contextlib import redirect_stdout, redirect_stderr
+>>> from io import StringIO
+>>> str_io = StringIO()
+>>> with redirect_stderr(str_io), redirect_stdout(str_io):
+...     PandasMetaDataHooks.install_metadata_hooks()
+>>> print('\n'.join(str_io.getvalue().strip().split('\n')[-1:]))
+Installed PandasMetaDataHooks hooks
+>>> import pandas as pd
+>>> new_mdf = pd.read_csv('test.csv')
+>>> metadata = new_mdf.metadata
+>>> pprint(metadata['storage'])
+{'args': [],
+ 'data_filepath': 'test.csv',
+ 'metadata_filepath': 'test.csv.meta.json',
+ 'method': <function NDFrame.to_csv at ...>,
+ 'varargs': 'args'} 
 
+# remove pandas decorators when no longer needed
+>>> PandasMetaDataHooks.uninstall_metadata_hooks()
+Uninstalled PandasMetaDataHooks hooks
+
+# alternatively just use metapandas.read_* functions without installing hooks
+>>> pprint(mpd.read_csv('test.csv').metadata['storage'])
+{'args': [],
+ 'data_filepath': 'test.csv',
+ 'metadata_filepath': 'test.csv.meta.json',
+ 'method': <function NDFrame.to_csv at ...>,
+ 'varargs': 'args'} 
 ```
 
 Pandas modification can be performed by importing the `auto` module as follows:

@@ -1,5 +1,6 @@
 """Provides decorator functions for modifying pandas."""
 from functools import wraps
+from contextlib import redirect_stdout, redirect_stderr
 
 import os
 import sys
@@ -157,5 +158,11 @@ class PandasMetaDataHooks(HooksManager):
 
 
 # Now decorate MetaDataFrame to use metadata save decorators
-PandasMetaDataHooks.apply_hooks(MetaDataFrame, pandas_save_with_metadata,
-                                PandasMetaDataHooks.PANDAS_DATAFRAME_SAVE_HOOKS)
+with open(os.devnull, 'w') as devnull:
+    with redirect_stdout(devnull), redirect_stderr(devnull):
+        PandasMetaDataHooks.apply_hooks(MetaDataFrame, pandas_save_with_metadata,
+                                        PandasMetaDataHooks.PANDAS_DATAFRAME_SAVE_HOOKS)
+
+# add decorated pandas methods to module symbols
+for method, meta_kwargs in PandasMetaDataHooks.PANDAS_READ_HOOKS.items():
+    globals()[method] = pandas_read_with_metadata(getattr(pd, method), **meta_kwargs)
