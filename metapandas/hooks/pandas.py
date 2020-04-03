@@ -3,6 +3,7 @@ from functools import wraps
 from contextlib import redirect_stdout, redirect_stderr
 
 import os
+import re
 import sys
 import warnings
 import inspect
@@ -81,7 +82,7 @@ def pandas_save_with_metadata(function=None, argname='path',
                 datapath = kwargs.get(
                     argname, args[0] if not isinstance(
                         args[0], (pd.DataFrame, pd.Series)) else args[1])
-                metapath = str(datapath).replace('/', os.sep) + '.meta.json'
+                metapath = re.sub('/', os.sep, str(datapath).replace('/', os.sep) + '.meta.json')
                 additional_data['storage'].update({
                     'data_filepath': datapath,
                     'metadata_filepath': metapath,
