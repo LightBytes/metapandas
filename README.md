@@ -1,6 +1,11 @@
 # metapandas
 Track metadata when using pandas via JSON.
 
+![ ](https://github.com/LightBytes/metapandas/workflows/Python%20CI/badge.svg)
+[![ ](https://coveralls.io/repos/github/LightBytes/metapandas/badge.svg?branch=master)](https://coveralls.io/github/LightBytes/metapandas?branch=master)
+[![codecov](https://codecov.io/gh/LightBytes/metapandas/branch/master/graph/badge.svg)](https://codecov.io/gh/LightBytes/metapandas)
+![ ](https://img.shields.io/pypi/v/:metapandas)
+
 This both extends the pandas `DataFrame` with a `MetaDataFrame` class and
 can decorate commonly used pandas methods for retrieving/storing data to
 include metadata by default.
