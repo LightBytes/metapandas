@@ -41,11 +41,15 @@ try:
 
         # explicitly compile a master list of install requirements - workaround for bug with PBR & bdist_wheel 
         setup_kwargs['install_requires'] = list(set(list(setup_kwargs.get('install_requires',
-                                                                        config.get('options', {})
+                                                                          config.get('options', {})
                                                                                 .get('install_requires', []))) +
                                                     install_requirements))
 except ImportError:
     metadata = {}
+finally:
+    metadata.update({
+        'long_description': open('%s/%s' % (here, parser['metadata']['description-file'].strip())).read()
+    })
 
 # update with further information for sphinx
 metadata.update(parser['metadata'])
