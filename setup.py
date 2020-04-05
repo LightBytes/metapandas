@@ -26,6 +26,13 @@ CONSOLE_SCRIPTS = []
 parser = configparser.ConfigParser()
 parser.read('%s/setup.cfg' % here)
 
+install_requirements = [line.split('#')[0].strip(' ')
+                        for line in open('%s/requirements.txt' % here).readlines()
+                        if line and line.split('#')[0]]
+
+# explicitly compile a master list of install requirements - workaround for bug with PBR & bdist_wheel
+setup_kwargs['install_requires'] = install_requirements
+
 # add setup.cfg information back from metadata
 try:
     from setuptools.config import read_configuration
@@ -35,21 +42,13 @@ try:
     metadata['summary'] = metadata.get('summary', metadata['description'].split('\n')[0])
     if setup_kwargs.pop('pbr', False) is not True:
         setup_kwargs.update(metadata)
-        install_requirements = [line.split('#')[0].strip(' ')
-                                for line in open('%s/requirements.txt' % here).readlines()
-                                if line and line.split('#')[0]]
 
-        # explicitly compile a master list of install requirements - workaround for bug with PBR & bdist_wheel 
-        setup_kwargs['install_requires'] = list(set(list(setup_kwargs.get('install_requires',
-                                                                          config.get('options', {})
-                                                                                .get('install_requires', []))) +
-                                                    install_requirements))
 except ImportError:
     metadata = {}
 finally:
-    metadata.update({
-        'long_description': open('%s/%s' % (here, parser['metadata']['description-file'].strip())).read()
-    })
+    with open('%s/%s' % (here, parser['metadata']['description-file'].strip())) as f_desc:
+        long_description = f_desc.read()
+        setup_kwargs['long_description'] = long_description
 
 # update with further information for sphinx
 metadata.update(parser['metadata'])
