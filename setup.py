@@ -50,9 +50,14 @@ try:
 except ImportError:
     metadata = {}
 finally:
-    with open('%s/%s' % (here, parser['metadata']['description-file'].strip())) as f_desc:
+    readme_filename = '%s/%s' % (here, parser['metadata']['description-file'].strip())
+    with open(readme_filename) as f_desc:
         long_description = f_desc.read()
         setup_kwargs['long_description'] = long_description
+
+    # check whether we are using Markdown instead of Restructured Text and update setup accordingly
+    if readme_filename.lower().endswith('.md'):
+        setup_kwargs['long_description_content_type'] = 'text/markdown'
 
 # update with further information for sphinx
 metadata.update(parser['metadata'])
