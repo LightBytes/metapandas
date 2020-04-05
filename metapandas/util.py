@@ -14,13 +14,15 @@ def _vprint(*args, **kwargs):
 
 def snake_case(string: str) -> str:
     """Convert upper camelcase to snake case."""
-    return re.sub(r'(?<!^)(?=[A-Z])', '_', string)
+    return re.sub(r'(?<!^)(?=[A-Z])', '_', string).lower()
 
 
 def friendly_symbol_name(obj) -> str:
     """Return a friendly symbol name for obj."""
-    obj_name = obj.__name__ if str(type(obj)) == "<class 'module'>" else obj
-    return re.sub("(<|class|function| at [0-9]x[0-9A-F]{8,}|'|>)", '', str(obj_name))
+    if str(type(obj)) == "<class 'function'>":
+        obj = obj.__module__ + '.' + obj.__name__
+    obj_name = obj.__name__ if re.match("(<class 'module'>)", str(type(obj))) else obj
+    return re.sub("(<|class|function| object|at [0-9][x][0-9A-Fa-f]{8,}|'|>)", '', str(obj_name)).strip()
 
 
 def get_major_minor_version(module) -> Optional[float]:
@@ -37,11 +39,12 @@ def mangle(name: str, prefix: str = '', suffix: str = '_original') -> str:
     return '{prefix}{name}{suffix}'.format(**locals())
 
 
-def get_json_dumps_kwargs(json):
+def get_json_dumps_kwargs(json=None):
     """Return dumps keyword arguments compatible with installed json version."""
     kwargs = JSON_DUMPS_KWARGS or {'indent': 2}
-    if json != sys.modules.get('json'):
+    if json == sys.modules.get('jsonpickle'):
         jsonpickle_version = get_major_minor_version(json)
+        print(jsonpickle_version)
         if jsonpickle_version < 1.5:
-            kwargs.pop('indent')  # not supported
+            kwargs.pop('indent', None)  # not supported
     return kwargs
