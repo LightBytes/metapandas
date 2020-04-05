@@ -3,12 +3,12 @@ import sys
 import re
 
 from typing import Optional
-from metapandas.config import VERBOSE, JSON_DUMPS_KWARGS
+import metapandas.config as cfg
 
 
 def _vprint(*args, **kwargs):
     """Print only when VERBOSE evaulates to true within config."""
-    if VERBOSE:
+    if cfg.VERBOSE:
         print(*args, **kwargs)
 
 
@@ -41,7 +41,7 @@ def mangle(name: str, prefix: str = '', suffix: str = '_original') -> str:
 
 def get_json_dumps_kwargs(json=None):
     """Return dumps keyword arguments compatible with installed json version."""
-    kwargs = JSON_DUMPS_KWARGS or {'indent': 2}
+    kwargs = cfg.JSON_DUMPS_KWARGS or {'indent': 2}
     if json == sys.modules.get('jsonpickle'):
         jsonpickle_version = get_major_minor_version(json)
         print(jsonpickle_version)
