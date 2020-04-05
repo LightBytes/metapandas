@@ -28,9 +28,8 @@ parser.read('%s/setup.cfg' % here)
 
 install_requirements = [line.split('#')[0].strip(' ')
                         for line in open('%s/requirements.txt' % here).readlines()
-                        if line and line.split('#')[0]]
+                        if line and line.split('#')[0] and not line.startswith('git+')]  # can't currently handle git URLs unless using PBR
 
-# explicitly compile a master list of install requirements - workaround for bug with PBR & bdist_wheel
 setup_kwargs['install_requires'] = install_requirements
 
 # add setup.cfg information back from metadata
@@ -42,6 +41,11 @@ try:
     metadata['summary'] = metadata.get('summary', metadata['description'].split('\n')[0])
     if setup_kwargs.pop('pbr', False) is not True:
         setup_kwargs.update(metadata)
+        # explicitly compile a master list of install requirements - workaround for bug with PBR & bdist_wheel 
+        setup_kwargs['install_requires'] = list(set(list(setup_kwargs.get('install_requires',
+                                                                          config.get('options', {})
+                                                                                .get('install_requires', []))) +
+                                                    install_requirements))        
 
 except ImportError:
     metadata = {}
