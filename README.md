@@ -1,11 +1,14 @@
 # metapandas
 Track metadata when using pandas via JSON.
 
+[![](https://img.shields.io/pypi/pyversions/metapandas.svg?logo=python)](https://pypi.org/pypi/metapandas/)
+[![](https://img.shields.io/pypi/l/metapandas.svg)](https://pypi.org/pypi/metapandas/)
+[![](https://img.shields.io/pypi/implementation/metapandas?color=seagreen)](https://pypi.org/pypi/metapandas/)
 ![ ](https://github.com/LightBytes/metapandas/workflows/Python%20CI/badge.svg)
 [![ ](https://coveralls.io/repos/github/LightBytes/metapandas/badge.svg?branch=master)](https://coveralls.io/github/LightBytes/metapandas?branch=master)
 [![codecov](https://codecov.io/gh/LightBytes/metapandas/branch/master/graph/badge.svg)](https://codecov.io/gh/LightBytes/metapandas)
 ![ ](https://img.shields.io/pypi/v/metapandas)
-![ ](https://img.shields.io/badge/Open%20in%20Gitpod-blue?logo=gitpod&link=https://gitpod.io/#https://github.com/LightBytes/metapandas)
+![ ](https://img.shields.io/badge/dev-Open%20in%20Gitpod-blue?logo=gitpod&link=https://gitpod.io/#https://github.com/LightBytes/metapandas)
 
 This both extends the pandas `DataFrame` with a `MetaDataFrame` class and
 can decorate commonly used pandas methods for retrieving/storing data to
