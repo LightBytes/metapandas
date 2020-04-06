@@ -187,7 +187,9 @@ class MetaData:
         for key in [key for key in set(list(left.keys()) + list(right.keys()))
                     if key in left and key in right]:
             if isinstance(merged[key], str):
-                merged[key] = '{left[key]}{sep}{right[key]}'.format(**locals())
+                merged[key] = '{left_key}{sep}{right_key}'.format(left_key=left[key],
+                                                                  right_key=right[key],
+                                                                  sep=sep)
             elif isinstance(merged[key], (list, tuple)):
                 merged[key] = list(left[key]) + list(right[key])
             elif isinstance(merged[key], dict):
