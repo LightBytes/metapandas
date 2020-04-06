@@ -46,7 +46,7 @@ latexpdf: build/pdf
 pdf-single-pass:
 	 ($(FORCE_INPUT) $(MAKE) latexpdf || (cd build/latex/ && \
 		$(FORCE_INPUT) latexmk -f -pdf)) && \
-			cp build/latex/nats*.pdf build/pdf/
+			cp build/latex/$(PACKAGE)*.pdf build/pdf/
 
 # do two-pass approach to ensure bookmarks/cross-references are included in PDF output 
 pdf:
