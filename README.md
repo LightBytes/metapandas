@@ -1,14 +1,20 @@
 # metapandas
 Track metadata when using pandas via JSON.
 
+<!--lint disable no-inline-padding-->
+
+[![ ](https://github.com/LightBytes/metapandas/workflows/Python%20CI/badge.svg)](https://github.com/LightBytes/metapandas/actions?query=workflow%3A"Python+CI")
 [![ ](https://img.shields.io/pypi/pyversions/metapandas.svg?logo=python)](https://pypi.org/pypi/metapandas/)
 [![ ](https://img.shields.io/pypi/l/metapandas.svg)](https://pypi.org/pypi/metapandas/)
 [![ ](https://img.shields.io/pypi/implementation/metapandas?color=seagreen)](https://pypi.org/pypi/metapandas/)
-![ ](https://github.com/LightBytes/metapandas/workflows/Python%20CI/badge.svg)
+[![ ](https://img.shields.io/pypi/dm/metapandas.svg?color=yellow)](https://pypi.org/pypi/metapandas/)
 [![ ](https://coveralls.io/repos/github/LightBytes/metapandas/badge.svg?branch=master)](https://coveralls.io/github/LightBytes/metapandas?branch=master)
 [![codecov](https://codecov.io/gh/LightBytes/metapandas/branch/master/graph/badge.svg)](https://codecov.io/gh/LightBytes/metapandas)
+[![Codacy Badge](https://api.codacy.com/project/badge/Grade/de571d98b5ed4203b6eda5f927c8835d)](https://www.codacy.com/gh/LightBytes/metapandas?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=LightBytes/metapandas&amp;utm_campaign=Badge_Grade)
 ![ ](https://img.shields.io/pypi/v/metapandas)
 ![ ](https://img.shields.io/badge/dev-Open%20in%20Gitpod-blue?logo=gitpod&link=https://gitpod.io/#https://github.com/LightBytes/metapandas)
+
+<!--lint enable no-inline-padding-->
 
 This both extends the pandas `DataFrame` with a `MetaDataFrame` class and
 can decorate commonly used pandas methods for retrieving/storing data to
@@ -73,7 +79,7 @@ Uninstalled PandasMetaDataHooks hooks
 
 Pandas modification can be performed by importing the `auto` module as follows:
 
-```
+```raw
 >>> import metapandas.auto
 Applied hook for metapandas.metadataframe.MetaDataFrame.to_csv
 Applied hook for metapandas.metadataframe.MetaDataFrame.to_excel
@@ -129,7 +135,6 @@ pip install -e .
 This will install the package in development mode. Note that is you have forked
 the repo then change the URL as appropriate. 
 
-
 ## Documentation
 
 Documentation can be found within the `docs/` directory. This project
@@ -155,19 +160,21 @@ chmod +x setup.sh
 
 PDFs can then be created with `make pdf` from within the `docs/` directory.
 
-
 ## Contribution Guidelines
 
 Contributions are extremely welcome and highly encouraged. To help with consistency
 please can the following areas be considered before submitting a PR for review:
 
-- Use `autopep8 -a -a -i -r .` to run over any modified files to ensure basic pep8 conformance,
-  allowing the code to be read in a style expected for most python projects.
-- New or changed functionality should be tested, running `pytest` should 
-- Try to document any new or changed functionality. Note: this project uses
-  [numpydoc](https://numpydoc.readthedocs.io/en/latest/format.html) for it's
-  docstring documentation style.
+  - Use `autopep8 -a -a -i -r .` to run over any modified files to ensure basic pep8 conformance,
+    allowing the code to be read in a style expected for most python projects.
 
+  - New or changed functionality should be tested, running `pytest` should
+
+
+
+  - Try to document any new or changed functionality. Note: this project uses
+    [numpydoc](https://numpydoc.readthedocs.io/en/latest/format.html) for it's
+    docstring documentation style.
 
 ## License
 
