@@ -108,14 +108,14 @@ def test_save_as_json_data_exists_merge_stages():
     if meta_json.exists():
         meta_json.unlink()
 
-    with open(meta_json, 'w') as f:
+    with open(str(meta_json), 'w') as f:
         json.dump({'testing': True}, f)
 
     md.save_as_json(data={}, exists_action='merge')
 
     assert meta_json.exists()
 
-    with open(meta_json) as f:
+    with open(str(meta_json)) as f:
         data = json.load(f)
 
     assert 'stages' in data
