@@ -130,3 +130,6 @@ dmypy.json
 
 # examples
 test.csv*
+
+# node
+node_modules/
