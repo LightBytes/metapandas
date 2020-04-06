@@ -21,6 +21,11 @@ yolk3k  # get status of development
 pylama
 #prospector  # conflicts with pycodestyle, needs an update to PyPI
 yapf  # format code according to style guide
+metrics
+metrics.bumpversion
+metrics.gitinfo
+metrics.pylint
+metrics.pytest-cov
 
 # checkers
 eradicate  # removes commented out dead code
@@ -66,3 +71,4 @@ matplotlib
 # other
 echo
 2to3
+
