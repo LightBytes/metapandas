@@ -32,6 +32,7 @@ def pandas_read_with_metadata(function=None, argname='path', **meta_kwargs):
                 }
             })
             try:
+                metapath = None
                 if meta_kwargs.get('argname_is_path', None) is False:
                     metadata.update({
                         argname: kwargs.get(argname, args[0])
@@ -47,8 +48,10 @@ def pandas_read_with_metadata(function=None, argname='path', **meta_kwargs):
                             'metadata_filepath': metapath
                         })
                         metadata.update(json.loads(metafile.read()))
-            except Exception as err:
+            except IOError as err:
                 _vprint('Could not load metadata from {} due to {!r}'.format(metapath, err), file=sys.stderr)
+            except Exception as err:
+                _vprint('Error setting up metadata due to {!r}'.format(err), file=sys.stderr)
             finally:
                 result.metadata = metadata
             return result
