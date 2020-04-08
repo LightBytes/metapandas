@@ -68,7 +68,11 @@ def pandas_save_with_metadata(function=None, argname='path',
     def decorator(func):
         @wraps(func)
         def wrapper(*args, **kwargs):
-            additional_data = getattr(args[0], 'metadata', {})
+            try:
+                additional_data = getattr(args[0], 'metadata', {})
+            except IndexError:  # no arguments given!
+                additional_data = {}
+                args = (None, )  # set dummy args for datapath
             arginfo = inspect.getargvalues(sys._getframe(0))
             additional_data.update({
                 'storage': {
