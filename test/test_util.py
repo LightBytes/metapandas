@@ -1,10 +1,10 @@
+# nosec
 from metapandas import util
-from unittest.mock import MagicMock, Mock, patch
+from unittest.mock import Mock, patch
 from contextlib import redirect_stdout
 from metapandas import config
 from io import StringIO
 
-import pytest
 import pandas as pd
 import json
 import jsonpickle
