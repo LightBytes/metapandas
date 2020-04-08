@@ -8,6 +8,7 @@ Welcome to the `metapandas` documentation!
    :caption: Contents:
 
    introduction
+   changelog
 
 
 Indices and tables

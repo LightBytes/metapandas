@@ -154,7 +154,6 @@ graphviz_output_format = 'svg'
 # Intersphinx mapping
 intersphinx_mapping = {
     'python': ('http://docs.python.org/', None),
-    'sphinx': ('http://sphinx.pocoo.org', None),
     'astropy': ('http://docs.astropy.org/en/latest/', None),
     'navpy': ('https://navpy.readthedocs.io/en/latest/', None),
     'pint': ('https://pint.readthedocs.io/en/latest/', None),
@@ -193,7 +192,7 @@ html_theme_options = {
 # Add any paths that contain custom static files (such as style sheets) here,
 # relative to this directory. They are copied after the builtin static files,
 # so a file named "default.css" will overwrite the builtin "default.css".
-html_static_path = ['_static']
+html_static_path = ['static']
 
 # Custom sidebar templates, must be a dictionary that maps document names
 # to template names.
@@ -205,7 +204,7 @@ html_static_path = ['_static']
 #
 # html_sidebars = {}
 
-html_logo = 'static/html_logo.png'
+html_logo = 'static/logo.png'
 
 
 # -- Options for HTMLHelp output ---------------------------------------------
