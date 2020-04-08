@@ -30,7 +30,7 @@ metrics.pytest-cov
 # checkers
 eradicate  # removes commented out dead code
 pycycle  # checks for circular imports
-isort  # order of imports
+isort[requirements,pipfile]  # order of imports
 typycal; python_version >= "3.6"
 
 pyroma  # tool for checking a package's best practices
