@@ -19,7 +19,7 @@ yolk3k  # get status of development
 
 # linters
 pylama
-#prospector  # conflicts with pycodestyle, needs an update to PyPI
+#prospector[with_everything]  # conflicts with pycodestyle, needs an update to PyPI
 yapf  # format code according to style guide
 metrics
 metrics.bumpversion
