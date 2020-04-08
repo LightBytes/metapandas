@@ -1,0 +1,381 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>&lt;no title&gt; &mdash; metapandas 0.0.0 documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+  <script type="text/javascript" src="_static/js/modernizr.min.js"></script>
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+        <script src="_static/jquery.js"></script>
+        <script src="_static/underscore.js"></script>
+        <script src="_static/doctools.js"></script>
+        <script src="_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="_static/js/theme.js"></script>
+
+    
+
+  
+  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="_static/graphviz.css" type="text/css" />
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="index.html" class="icon icon-home"> metapandas
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                0.0
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="changelog.html">1. Changes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="changelog.html#todo">2. TODO</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">metapandas</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content style-external-links">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="index.html">Docs</a> &raquo;</li>
+        
+      <li>&lt;no title&gt;</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="_sources/inntroduction.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="highlight-default notranslate"><div class="highlight"><pre><span></span># metapandas
+Track metadata when using pandas via JSON.
+
+&lt;!--lint disable no-inline-padding--&gt;
+
+[![ ](https://github.com/LightBytes/metapandas/workflows/Python%20CI/badge.svg)](https://github.com/LightBytes/metapandas/actions?query=workflow%3A&quot;Python+CI&quot;)
+[![ ](https://img.shields.io/pypi/pyversions/metapandas.svg?logo=python)](https://pypi.org/pypi/metapandas/)
+[![ ](https://img.shields.io/pypi/l/metapandas.svg)](https://pypi.org/pypi/metapandas/)
+[![ ](https://img.shields.io/pypi/implementation/metapandas?color=seagreen)](https://pypi.org/pypi/metapandas/)
+[![ ](https://img.shields.io/pypi/dm/metapandas.svg?color=yellow)](https://pypi.org/pypi/metapandas/)
+[![ ](https://coveralls.io/repos/github/LightBytes/metapandas/badge.svg?branch=master)](https://coveralls.io/github/LightBytes/metapandas?branch=master)
+[![codecov](https://codecov.io/gh/LightBytes/metapandas/branch/master/graph/badge.svg)](https://codecov.io/gh/LightBytes/metapandas)
+[![Codacy Badge](https://api.codacy.com/project/badge/Grade/de571d98b5ed4203b6eda5f927c8835d)](https://www.codacy.com/gh/LightBytes/metapandas?utm_source=github.com&amp;amp;utm_medium=referral&amp;amp;utm_content=LightBytes/metapandas&amp;amp;utm_campaign=Badge_Grade)
+![ ](https://img.shields.io/pypi/v/metapandas)
+[![ ](https://img.shields.io/badge/Donate-buy%20me%20a%20coffee-green?logo=Buy%20me%20a%20coffee&amp;logoColor=white)](https://ko-fi.com/lightbytes)
+![ ](https://img.shields.io/badge/dev-Open%20in%20Gitpod-blue?logo=gitpod&amp;link=https://gitpod.io/#https://github.com/LightBytes/metapandas)
+[![Binder](https://camo.githubusercontent.com/52feade06f2fecbf006889a904d221e6a730c194/68747470733a2f2f636f6c61622e72657365617263682e676f6f676c652e636f6d2f6173736574732f636f6c61622d62616467652e737667)](https://colab.research.google.com/github/LightBytes/metapandas)
+[![Binder](https://img.shields.io/badge/Binder%20Launch:-Jupyter%20Lab-blue.svg?colorA=&amp;logo=data:image/png;base64,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)](https://mybinder.org/v2/gh/LightBytes/metapandas/master?urlpath=lab)
+
+&lt;!--lint enable no-inline-padding--&gt;
+
+This both extends the pandas `DataFrame` with a `MetaDataFrame` class and
+can decorate commonly used pandas methods for retrieving/storing data to
+include metadata by default.
+
+```python
+&gt;&gt;&gt; import numpy as np
+&gt;&gt;&gt; import metapandas as mpd
+&gt;&gt;&gt; data = np.arange(9).reshape(3, 3)
+&gt;&gt;&gt; mdf = mpd.MetaDataFrame(data, columns=list(&#39;abc&#39;), metadata={})
+&gt;&gt;&gt; from pprint import pprint
+&gt;&gt;&gt; pprint(mdf.metadata)
+{&#39;constructor&#39;: {&#39;args&#39;: (array([[0, 1, 2],
+       [3, 4, 5],
+       [6, 7, 8]]),),
+                 &#39;class&#39;: &lt;class &#39;metapandas.metadataframe.MetaDataFrame&#39;&gt;,
+                 &#39;kwargs&#39;: {&#39;columns&#39;: [&#39;a&#39;, &#39;b&#39;, &#39;c&#39;]}}}
+
+# metadata is preserved when copied
+&gt;&gt;&gt; mdf.metadata[&#39;test&#39;] = True
+&gt;&gt;&gt; mdf.copy().metadata.get(&#39;test&#39;)
+True
+
+# metadata is stored in a JSON when saving the dataframe to disk
+&gt;&gt;&gt; mdf.to_csv(&#39;test.csv&#39;, index=False)
+&gt;&gt;&gt; from pathlib import Path
+&gt;&gt;&gt; list(map(str, Path(&#39;.&#39;).glob(&#39;test.csv*&#39;)))
+[&#39;test.csv&#39;, &#39;test.csv.meta.json&#39;]
+
+# metadata is automatically loaded when pandas hooks are installed
+# this is useful if you have existing pandas code that you want to augment with metadta
+&gt;&gt;&gt; from metapandas.hooks.pandas import PandasMetaDataHooks
+&gt;&gt;&gt; from contextlib import redirect_stdout, redirect_stderr
+&gt;&gt;&gt; from io import StringIO
+&gt;&gt;&gt; str_io = StringIO()
+&gt;&gt;&gt; with redirect_stderr(str_io), redirect_stdout(str_io):
+...     PandasMetaDataHooks.install_metadata_hooks()
+&gt;&gt;&gt; print(&#39;\n&#39;.join(str_io.getvalue().strip().split(&#39;\n&#39;)[-1:]))
+Installed PandasMetaDataHooks hooks
+&gt;&gt;&gt; import pandas as pd
+&gt;&gt;&gt; new_mdf = pd.read_csv(&#39;test.csv&#39;)
+&gt;&gt;&gt; metadata = new_mdf.metadata
+&gt;&gt;&gt; pprint(metadata[&#39;storage&#39;])
+{&#39;args&#39;: [],
+ &#39;data_filepath&#39;: &#39;test.csv&#39;,
+ &#39;metadata_filepath&#39;: &#39;test.csv.meta.json&#39;,
+ &#39;method&#39;: &lt;function NDFrame.to_csv at ...&gt;,
+ &#39;varargs&#39;: &#39;args&#39;} 
+
+# remove pandas decorators when no longer needed
+&gt;&gt;&gt; PandasMetaDataHooks.uninstall_metadata_hooks()
+Uninstalled PandasMetaDataHooks hooks
+
+# alternatively just use metapandas.read_* functions without installing hooks
+&gt;&gt;&gt; pprint(mpd.read_csv(&#39;test.csv&#39;).metadata[&#39;storage&#39;])
+{&#39;args&#39;: [],
+ &#39;data_filepath&#39;: &#39;test.csv&#39;,
+ &#39;metadata_filepath&#39;: &#39;test.csv.meta.json&#39;,
+ &#39;method&#39;: &lt;function NDFrame.to_csv at ...&gt;,
+ &#39;varargs&#39;: &#39;args&#39;} 
+```
+
+Pandas modification can be performed by importing the `auto` module as follows:
+
+```raw
+&gt;&gt;&gt; import metapandas.auto
+Applied hook for metapandas.metadataframe.MetaDataFrame.to_csv
+Applied hook for metapandas.metadataframe.MetaDataFrame.to_excel
+Applied hook for metapandas.metadataframe.MetaDataFrame.to_feather
+Applied hook for metapandas.metadataframe.MetaDataFrame.to_hdf
+Applied hook for metapandas.metadataframe.MetaDataFrame.to_json
+Applied hook for metapandas.metadataframe.MetaDataFrame.to_parquet
+Applied hook for metapandas.metadataframe.MetaDataFrame.to_pickle
+Applied hook for pandas.read_csv
+Applied hook for pandas.read_excel
+Applied hook for pandas.read_feather
+Applied hook for pandas.read_hdf
+Applied hook for pandas.read_json
+Applied hook for pandas.read_parquet
+Applied hook for pandas.read_pickle
+Applied hook for pandas.read_sql
+Applied hook for pandas.read_sql_table
+Applied hook for pandas.read_sql_query
+Applied hook for pandas.core.frame.DataFrame.to_csv
+Applied hook for pandas.core.frame.DataFrame.to_excel
+Applied hook for pandas.core.frame.DataFrame.to_feather
+Applied hook for pandas.core.frame.DataFrame.to_hdf
+Applied hook for pandas.core.frame.DataFrame.to_json
+Applied hook for pandas.core.frame.DataFrame.to_parquet
+Applied hook for pandas.core.frame.DataFrame.to_pickle
+Installed PandasMetaDataHooks hooks
+```
+
+## Installation
+
+MetaPandas itself is a pure python package, but depends on pandas and the SciPy
+stack. Note: It optionally uses geopandas as well, which is often difficult
+to install without `conda`.
+
+To install, simply try:
+
+```bash
+pip install metapandas
+```
+
+## Development
+
+To set up a development environment, first create either a new virtual or
+conda environment before activating it and then run the following:
+
+```bash
+git clone https://github.com/lightbytes/metapandas
+cd metapandas
+pip install -r requirements-dev.txt requirements-test.txt -r requirements.txt
+pip install -e .
+```
+
+This will install the package in development mode. Note that is you have forked
+the repo then change the URL as appropriate. 
+
+## Documentation
+
+Documentation can be found within the `docs/` directory. This project
+uses sphinx to autogenerate API documentation by scraping python docstrings.
+
+To generate the HTML documentation, simply do the following:
+
+```bash
+cd docs
+make html
+```
+
+### PDF generation
+
+PDF documentation is currently only supported on Ubuntu systems, but needs
+additional packages to run. These can be installed by:
+
+```bash
+cd docs
+chmod +x setup.sh
+./setup.sh
+```
+
+PDFs can then be created with `make pdf` from within the `docs/` directory.
+
+## Contribution Guidelines
+
+Contributions are extremely welcome and highly encouraged. To help with consistency
+please can the following areas be considered before submitting a PR for review:
+
+  - Use `autopep8 -a -a -i -r .` to run over any modified files to ensure basic pep8 conformance,
+    allowing the code to be read in a style expected for most python projects.
+
+  - New or changed functionality should be tested, running `pytest` should
+
+
+
+  - Try to document any new or changed functionality. Note: this project uses
+    [numpydoc](https://numpydoc.readthedocs.io/en/latest/format.html) for it&#39;s
+    docstring documentation style.
+
+## License
+
+Released under MIT license.
+</pre></div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2020-2020, Light Bytes Technology Ltd.
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>
