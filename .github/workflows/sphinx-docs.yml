@@ -1,5 +1,5 @@
 name: "Pull Request Docs Check"
-on: 
+on:
 - pull_request
 
 jobs:
@@ -54,7 +54,7 @@ jobs:
           sphinx-build docs public -b dirhtml
 
       # still need to build and set the PAT to get a rebuild on the pages job,
-      # apart from that quite clean and nice 
+      # apart from that quite clean and nice
       - name: github pages deploy
         uses: peaceiris/actions-gh-pages@v2.3.1
         env:
