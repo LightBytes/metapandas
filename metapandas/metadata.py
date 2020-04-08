@@ -85,8 +85,8 @@ class MetaData:
 
         """
         try:
-            pkgs = subprocess.check_output(cmd, shell=True, stderr=subprocess.PIPE)\
-                             .decode('utf8', errors='ignore')  # nosec
+            output_bytes = subprocess.check_output(cmd, shell=True, stderr=subprocess.PIPE)  # nosec
+            pkgs = output_bytes.decode('utf8', errors='ignore')
             lines = re.split('[\r\n]+', re.sub('[ \t]+', ',', pkgs))[ignore_first_n_lines:]
             data = [line.split(',')[:len(columns)] for line in lines if line.strip()]
         except subprocess.CalledProcessError:
@@ -302,12 +302,12 @@ class MetaData:
                         original_data = json.loads(f.read())
                     except JSONDecodeError as err:
                         original_data = {}
-                        if errors == 'raise':
-                            raise
-                        elif errors == 'warn':
+                        if errors == 'warn':
                             warnings.warn('Error decoding JSON data for "{}" due to {}'
                                           ''.format(filepath, err))
-
+                        elif errors == 'raise':
+                            raise
+                        
                 if 'stages' in original_data:
                     # extend stages list with new JSON metadata
                     data = original_data['stages'] + [data]

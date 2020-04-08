@@ -38,7 +38,10 @@ PUBLISHER = metadata['publisher']
 
 project = NAME
 publisher = PUBLISHER
-copyright = '2020-{}, {}'.format(date.today().year, publisher)
+start_year = 2020
+current_year = date.today().year
+copyright = '{}, {}'.format(current_year, publisher)  # pylint: disable=redefined-builtin
+copyright = ('{}-'.format(start_year) if start_year != current_year else '') + copyright
 author = AUTHOR
 
 # The short X.Y version

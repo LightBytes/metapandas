@@ -37,7 +37,7 @@ def test_MetaDataFrame_init_with_metadata_dict_specified():
     assert mdf.iloc[0].to_list() == [1, 2, 3]
     assert isinstance(mdf.metadata, dict)
     assert 'extra' in mdf.metadata.keys()
-    assert mdf.metadata['extra'] == True
+    assert mdf.metadata['extra']
     assert 'constructor' in mdf.metadata.keys()
     assert set(['args', 'class', 'kwargs']) == set(mdf.metadata['constructor'].keys())
     assert mdf.metadata['constructor']['args'] == ([[1, 2, 3]], )
