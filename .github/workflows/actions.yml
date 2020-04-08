@@ -75,6 +75,9 @@ jobs:
       - uses: jpetrucciani/bandit-check@master
         with:
           path: '.'
+      - uses: jpetrucciani/mypy-check@master
+        with:
+          path: '.'
 
   deploy:
     runs-on: ubuntu-latest
