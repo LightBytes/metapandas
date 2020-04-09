@@ -72,7 +72,6 @@ def pandas_save_with_metadata(function=None, argname='path',
                 additional_data = getattr(args[0], 'metadata', {})
             except IndexError:  # no arguments given!
                 additional_data = {}
-                args = (None, )  # set dummy args for datapath
             arginfo = inspect.getargvalues(sys._getframe(0))
             additional_data.update({
                 'storage': {
@@ -95,6 +94,8 @@ def pandas_save_with_metadata(function=None, argname='path',
                 })
                 metadata.save_as_json(filepath=metapath, data=data,
                                       additional_data=additional_data)
+            except IndexError:
+                pass  # unable to establish filename, so skip
             except Exception as err:
                 _vprint('Could not save metadata to {} due to {!r}'.format(metapath, err), file=sys.stderr)
                 raise
