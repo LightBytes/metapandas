@@ -1,0 +1,8 @@
+{
+  "plugins": [
+    "remark-preset-lint-recommended",
+    ["lint-list-item-bullet-indent", false],
+    ["lint-list-item-indent", false],
+    ["remark-lint-no-inline-padding", false]
+  ]
+}
