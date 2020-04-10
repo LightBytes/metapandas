@@ -5,7 +5,6 @@ setuptools>=37
 cython
 cython-setuptools
 setuptools-cythonize
-pylint
 nbstripout
 pbr
 wheel
@@ -18,14 +17,19 @@ safety
 yolk3k  # get status of development
 
 # linters
+autopep8
+black
 pylama
+pylint
 #prospector[with_everything]  # conflicts with pycodestyle, needs an update to PyPI
-yapf  # format code according to style guide
+lxml  # needed for mypy
 metrics
 metrics.bumpversion
 metrics.gitinfo
 metrics.pylint
 metrics.pytest-cov
+mypy
+yapf  # format code according to style guide
 
 # checkers
 eradicate  # removes commented out dead code
