@@ -10,6 +10,8 @@ image:
 tasks:
   - command: >
         python3 -m pip install -r requirements.txt -r requirements-test.txt -r requirements-dev.txt
+  - command: >
+        npm install -g --save remark-cli remark-preset-lint-recommended
 
 vscode:
   extensions:
