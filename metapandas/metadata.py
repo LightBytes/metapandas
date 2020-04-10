@@ -19,7 +19,7 @@ import pandas as pd
 
 from loguru import logger
 
-from metapandas.util import _vprint, get_json_dumps_kwargs
+from metapandas.util import get_json_dumps_kwargs
 
 try:
     import psutil
@@ -62,7 +62,10 @@ class MetaData:
     @staticmethod
     def _list_packages(cmd: str, columns: List[str],
                        ignore_first_n_lines: int = 0) -> pd.DataFrame:
-        """Helper method for listing packages using system commands to produce output dataframes.
+        """List packages using system commands to produce output dataframes.
+
+        This is intended to act as an internal helper method to interface
+        with shell command output via subprocess calls.
 
         Parameters
         ----------
@@ -196,14 +199,13 @@ class MetaData:
                 merged[key] = cls.merge(left[key], right[key])
         return merged
 
-    def get_metadata(self) -> Dict[str, Any]:
-        """Create a metadata dictionary or tagging generated data with.
+    def get_basic_metadata(self) -> Dict[str, Any]:
+        """Return basic metadata in dictionary form.
 
         Returns
         -------
         dict
             Dictionary of metadata information.
-
         """
         metadata = {
             'os': platform.system(),
@@ -238,7 +240,18 @@ class MetaData:
         if cpuinfo:
             metadata['cpu'] = ' @ '.join([v for k, v in cpuinfo.get_cpu_info().items()
                                           if k in ['brand', 'hz_advertised']])
+        return metadata
 
+    def get_metadata(self) -> Dict[str, Any]:
+        """Create a metadata dictionary or tagging generated data with.
+
+        Returns
+        -------
+        dict
+            Dictionary of metadata information.
+
+        """
+        metadata = self.get_basic_metadata()
         conda_prefix = os.environ.get('CONDA_PREFIX', None)
         if conda_prefix:
             metadata['conda-environment'] = Path(conda_prefix).name
@@ -307,7 +320,7 @@ class MetaData:
                                           ''.format(filepath, err))
                         elif errors == 'raise':
                             raise
-                        
+
                 if 'stages' in original_data:
                     # extend stages list with new JSON metadata
                     data = original_data['stages'] + [data]
