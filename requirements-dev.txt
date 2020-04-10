@@ -21,7 +21,9 @@ autopep8
 black
 pylama
 pylint
-#prospector[with_everything]  # conflicts with pycodestyle, needs an update to PyPI
+pyflakes<2.0.0
+flake8<3.0.0
+prospector[with_everything]  # conflicts with pycodestyle, needs an update to PyPI
 lxml  # needed for mypy
 metrics
 metrics.bumpversion
@@ -48,7 +50,7 @@ pydeps
 
 # documentation
 docutils  #==0.14
-pycodestyle  # prospector==1.2.0 is incompatible with pycodestyle==2.5.0
+pycodestyle==2.4.0  # prospector==1.2.0 is incompatible with pycodestyle==2.5.0
 doc8
 numpydoc
 sphinx-autodoc-typehints
