@@ -1,5 +1,6 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
+"""Setup script for package."""
 import os
 import sys
 import configparser

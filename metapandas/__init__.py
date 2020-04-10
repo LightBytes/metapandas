@@ -1,4 +1,4 @@
-"""This is the main module for MetaPandas."""
+"""Main top-level module for MetaPandas package."""
 
 from metapandas.metadataframe import MetaDataFrame
 from metapandas.metadata import MetaData
