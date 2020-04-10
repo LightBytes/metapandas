@@ -1,5 +1,6 @@
 import pandas as pd
 
+
 def test_auto():
     read_csv = pd.read_csv
     import metapandas.auto

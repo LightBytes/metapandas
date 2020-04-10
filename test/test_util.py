@@ -1,4 +1,3 @@
-# nosec
 from metapandas import util
 from unittest.mock import Mock, patch
 from contextlib import redirect_stdout
@@ -61,6 +60,7 @@ def test_get_major_minor_verison_version_defined():
 def test_mangle():
     mangled = util.mangle('test')
     assert mangled == 'test' + '_original'
+
 
 def test_mangle_with_prefix():
     mangled = util.mangle('test', prefix='abc')

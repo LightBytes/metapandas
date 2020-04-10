@@ -4,6 +4,7 @@ from metapandas.hooks.pandas import (
     PandasMetaDataHooks
 )
 
+
 def test_install_metadata_hooks():
     PandasMetaDataHooks.install_metadata_hooks()
     PandasMetaDataHooks.install_metadata_hooks()

@@ -8,6 +8,7 @@ from pathlib import Path
 
 from metapandas.metadata import MetaData
 
+
 def test_init():
     md1 = MetaData()
 
@@ -49,6 +50,7 @@ def test_list_brew_packages():
     assert isinstance(df, pd.DataFrame)
     assert 'name' in df.columns
     assert 'version' in df.columns
+
 
 def test_save_as_json_defaults():
     md = MetaData()
@@ -174,7 +176,7 @@ def test_register_action():
     md = MetaData()
     actions = md.actions.copy()
     md.register_action(on='test_env', action='do_unit_test',
-                        description='test if action is recorded')
+                       description='test if action is recorded')
     assert actions != md.actions
     assert isinstance(md.actions, dict)
     assert len(md.actions.keys()) > len(actions.keys())
