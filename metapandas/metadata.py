@@ -276,7 +276,7 @@ class MetaData:
 
         return metadata
 
-    def save_as_json(self, filepath: Optional[str] = None,
+    def save_as_json(self, filepath: Optional[Union[Path, str]] = None,
                      data: Optional[dict] = None,
                      additional_data: Optional[dict] = None,
                      exists_action: str = 'merge',
