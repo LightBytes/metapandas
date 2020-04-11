@@ -1,0 +1,3 @@
+docs/build/html/
+docs/build/html/**
+docs/build/html/_static/*

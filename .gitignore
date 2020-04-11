@@ -124,6 +124,15 @@ venv.bak/
 .mypy_cache/
 .dmypy.json
 dmypy.json
+.mypy-report/
 
 # Pyre type checker
 .pyre/
+
+# examples
+test.csv*
+metadata.json
+
+# node
+node_modules/
+package-lock.json
