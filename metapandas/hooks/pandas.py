@@ -148,7 +148,7 @@ class PandasMetaDataHooks(HooksManager):
 
     """
 
-    PANDAS_DATAFRAME_SAVE_HOOKS: Dict[str, Dict[str, Any]] = {
+    PANDAS_DATAFRAME_SAVE_HOOKS = {
         "to_csv": {"argname": "path_or_buf"},
         "to_excel": {"argname": "excel_writer"},
         "to_feather": {"argname": "fname"},
@@ -156,9 +156,9 @@ class PandasMetaDataHooks(HooksManager):
         "to_json": {"argname": "path_or_buf"},
         "to_parquet": {"argname": "fname"},
         "to_pickle": {"argname": "path"},
-    }
+    }  # type: Dict[str, Dict[str, Any]]
 
-    PANDAS_READ_HOOKS: Dict[str, Dict[str, Any]] = {
+    PANDAS_READ_HOOKS = {
         "read_csv": {"argname": "filepath_or_buffer"},
         "read_excel": {"argname": "io"},
         "read_feather": {"argname": "path"},
@@ -169,7 +169,7 @@ class PandasMetaDataHooks(HooksManager):
         "read_sql": {"argname": "sql", "argname_is_path": False},
         "read_sql_table": {"argname": "table_name", "argname_is_path": False},
         "read_sql_query": {"argname": "sql", "argname_is_path": False},
-    }
+    }  # type: Dict[str, Dict[str, Any]]
 
     @classmethod
     def install_metadata_hooks(cls):
