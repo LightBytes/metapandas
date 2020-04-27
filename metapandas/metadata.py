@@ -101,8 +101,8 @@ class MetaData:
         """
         try:
             output_bytes = subprocess.check_output(
-                cmd, shell=True, stderr=subprocess.PIPE
-            )  # nosec
+                cmd, shell=True, stderr=subprocess.PIPE  # nosec
+            )
             pkgs = output_bytes.decode("utf8", errors="ignore")
             lines = re.split("[\r\n]+", re.sub("[ \t]+", ",", pkgs))[
                 ignore_first_n_lines:
