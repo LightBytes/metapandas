@@ -24,26 +24,35 @@ from metapandas.util import get_json_dumps_kwargs
 try:
     import psutil
 except (ImportError, PermissionError):
-    logger.error('Unable to use psutil, maybe because it requires elevated privaledges')
+    logger.error("Unable to use psutil, maybe because it requires elevated privaledges")
     psutil = None
 
 try:
     import cpuinfo
 except (ImportError, PermissionError):
-    logger.error('Unable to use cpuinfo, maybe because it requires elevated privaledges')
+    logger.error(
+        "Unable to use cpuinfo, maybe because it requires elevated privaledges"
+    )
     cpuinfo = None
 
 try:
     import jsonpickle as json  # handle many arbitrary python objects
 except ImportError:
-    logger.error('Full JSON serialisation not available - please pip install jsonpickle')
-    import json
+    logger.error(
+        "Full JSON serialisation not available - please pip install jsonpickle"
+    )
+    import json  # type: ignore
 
 
 class MetaData:
     """A metadata class."""
 
-    def __init__(self, logger: Optional[logging.Logger] = None, filepath: str = 'metadata.json', **kwargs):
+    def __init__(
+        self,
+        logger: Optional[logging.Logger] = None,
+        filepath: str = "metadata.json",
+        **kwargs
+    ):
         """Create a new metadata object.
 
         Parameters
@@ -57,11 +66,14 @@ class MetaData:
         self.logger = logger or logging.getLogger(__file__)
         self.filepath = filepath
         self.__dict__.update(kwargs)
-        self.actions = defaultdict(lambda: defaultdict(lambda: defaultdict(lambda: '')), {})
+        self.actions: Dict[str, Any] = defaultdict(
+            lambda: defaultdict(lambda: defaultdict(lambda: "")), {}
+        )
 
     @staticmethod
-    def _list_packages(cmd: str, columns: List[str],
-                       ignore_first_n_lines: int = 0) -> pd.DataFrame:
+    def _list_packages(
+        cmd: str, columns: List[str], ignore_first_n_lines: int = 0
+    ) -> pd.DataFrame:
         """List packages using system commands to produce output dataframes.
 
         This is intended to act as an internal helper method to interface
@@ -88,10 +100,14 @@ class MetaData:
 
         """
         try:
-            output_bytes = subprocess.check_output(cmd, shell=True, stderr=subprocess.PIPE)  # nosec
-            pkgs = output_bytes.decode('utf8', errors='ignore')
-            lines = re.split('[\r\n]+', re.sub('[ \t]+', ',', pkgs))[ignore_first_n_lines:]
-            data = [line.split(',')[:len(columns)] for line in lines if line.strip()]
+            output_bytes = subprocess.check_output(
+                cmd, shell=True, stderr=subprocess.PIPE
+            )  # nosec
+            pkgs = output_bytes.decode("utf8", errors="ignore")
+            lines = re.split("[\r\n]+", re.sub("[ \t]+", ",", pkgs))[
+                ignore_first_n_lines:
+            ]
+            data = [line.split(",")[: len(columns)] for line in lines if line.strip()]
         except subprocess.CalledProcessError:
             data = []
         return pd.DataFrame(data, columns=columns)
@@ -114,8 +130,11 @@ class MetaData:
         When the subprocess command fails, an empty dataframe will be returned.
 
         """
-        return cls._list_packages(cmd='conda list', ignore_first_n_lines=3,
-                                  columns=['name', 'version', 'build', 'channel'])
+        return cls._list_packages(
+            cmd="conda list",
+            ignore_first_n_lines=3,
+            columns=["name", "version", "build", "channel"],
+        )
 
     @classmethod
     def list_brew_packages(cls) -> pd.DataFrame:
@@ -133,8 +152,9 @@ class MetaData:
         When the subprocess command fails, an empty dataframe will be returned.
 
         """
-        return cls._list_packages(cmd='brew list --versions',
-                                  columns=['name', 'version'])
+        return cls._list_packages(
+            cmd="brew list --versions", columns=["name", "version"]
+        )
 
     @classmethod
     def list_apt_packages(cls) -> pd.DataFrame:
@@ -153,11 +173,16 @@ class MetaData:
         When the subprocess command fails, an empty dataframe will be returned.
 
         """
-        df = cls._list_packages(cmd='dpkg -l', ignore_first_n_lines=5,
-                                columns=['installed', 'name', 'version', 'architecture'])
+        df = cls._list_packages(
+            cmd="dpkg -l",
+            ignore_first_n_lines=5,
+            columns=["installed", "name", "version", "architecture"],
+        )
         return df[df.columns[1:]]
 
-    def register_action(self, on: Union[Path, str], action: str, description: str) -> List[str]:
+    def register_action(
+        self, on: Union[Path, str], action: str, description: str
+    ) -> List[str]:
         """Denote processing undertaken for :code:`filename`.
 
         Parameters
@@ -176,23 +201,33 @@ class MetaData:
             A list of actions undertaken.
 
         """
-        self.actions[str(on)][str(datetime.datetime.now())
-                              ][action] += (description.strip('\n') + '\n' if description else '')
-        return ["{}: {}".format(k, ['<{ki}> {vi}'.format(**locals()) for ki, vi in v.items()])
-                for k, v in self.actions[str(on)].items()]
+        self.actions[str(on)][str(datetime.datetime.now())][action] += (
+            description.strip("\n") + "\n" if description else ""
+        )
+        return [
+            "{}: {}".format(
+                k, ["<{ki}> {vi}".format(**locals()) for ki, vi in v.items()]
+            )
+            for k, v in self.actions[str(on)].items()
+        ]
 
     @classmethod
-    def merge(cls, left: Dict[str, Any], right: Dict[str, Any], sep='; ') -> Dict[str, Any]:
+    def merge(
+        cls, left: Dict[str, Any], right: Dict[str, Any], sep="; "
+    ) -> Dict[str, Any]:
         """Merge two metadata dictionaries together using :code:`sep`."""
         merged = left.copy()
         right = right.copy()
         merged.update({k: v for k, v in right.items() if k not in left})
-        for key in [key for key in set(list(left.keys()) + list(right.keys()))
-                    if key in left and key in right]:
+        for key in [
+            key
+            for key in set(list(left.keys()) + list(right.keys()))
+            if key in left and key in right
+        ]:
             if isinstance(merged[key], str):
-                merged[key] = '{left_key}{sep}{right_key}'.format(left_key=left[key],
-                                                                  right_key=right[key],
-                                                                  sep=sep)
+                merged[key] = "{left_key}{sep}{right_key}".format(
+                    left_key=left[key], right_key=right[key], sep=sep
+                )
             elif isinstance(merged[key], (list, tuple)):
                 merged[key] = list(left[key]) + list(right[key])
             elif isinstance(merged[key], dict):
@@ -207,39 +242,51 @@ class MetaData:
         dict
             Dictionary of metadata information.
         """
-        metadata = {
-            'os': platform.system(),
-            'created-by': getpass.getuser().capitalize(),
-            'created-timestamp': str(datetime.datetime.now()),
-            'processed-on-machine': platform.node(),
-            'python-executable': sys.executable,
-            'python-version': platform.python_version(),
-            'python-implementation': platform.python_implementation(),
-            'python-command': ' '.join(sys.argv)
+        metadata: Dict[str, Any] = {
+            "os": platform.system(),
+            "created-by": getpass.getuser().capitalize(),
+            "created-timestamp": str(datetime.datetime.now()),
+            "processed-on-machine": platform.node(),
+            "python-executable": sys.executable,
+            "python-version": platform.python_version(),
+            "python-implementation": platform.python_implementation(),
+            "python-command": " ".join(sys.argv),
         }
 
         if psutil:
-            metadata.update({
-                'cpu-cores': psutil.cpu_count(logical=False),
-                'cpu-threads': psutil.cpu_count(logical=True),
-            })
-        metadata['environment-variables'] = {k: v for k, v in os.environ.items()
-                                             if not re.match('.*(KEY|PASSWORD|TOKEN).*', k.upper())}
+            metadata.update(
+                {
+                    "cpu-cores": psutil.cpu_count(logical=False),
+                    "cpu-threads": psutil.cpu_count(logical=True),
+                }
+            )
+        metadata["environment-variables"] = {
+            k: v
+            for k, v in os.environ.items()
+            if not re.match(".*(KEY|PASSWORD|TOKEN).*", k.upper())
+        }
         try:
             os_ver = {
-                'Linux': platform.linux_distribution,
-                'Darwin': platform.mac_ver,
-                'Windows': platform.win32_ver
+                "Linux": getattr(
+                    platform, "linux_distribution", lambda: platform.uname().release
+                ),
+                "Darwin": platform.mac_ver,
+                "Windows": platform.win32_ver,
             }
             with warnings.catch_warnings():
-                warnings.filterwarnings('ignore')  # ignore DeprecationWarning
-                metadata['system'] = ' '.join(map(str, os_ver[platform.system()]()))
+                warnings.filterwarnings("ignore")  # ignore DeprecationWarning
+                metadata["system"] = " ".join(map(str, os_ver[platform.system()]()))
         except AttributeError:
             pass
 
         if cpuinfo:
-            metadata['cpu'] = ' @ '.join([v for k, v in cpuinfo.get_cpu_info().items()
-                                          if k in ['brand', 'hz_advertised']])
+            metadata["cpu"] = " @ ".join(
+                [
+                    v
+                    for k, v in cpuinfo.get_cpu_info().items()
+                    if k in ["brand", "hz_advertised"]
+                ]
+            )
         return metadata
 
     def get_metadata(self) -> Dict[str, Any]:
@@ -252,35 +299,50 @@ class MetaData:
 
         """
         metadata = self.get_basic_metadata()
-        conda_prefix = os.environ.get('CONDA_PREFIX', None)
+        conda_prefix = os.environ.get("CONDA_PREFIX", None)
         if conda_prefix:
-            metadata['conda-environment'] = Path(conda_prefix).name
-            metadata['conda-packages'] = self.list_conda_packages().set_index('name').version.to_dict()
+            metadata["conda-environment"] = Path(conda_prefix).name
+            metadata["conda-packages"] = (
+                self.list_conda_packages().set_index("name").version.to_dict()
+            )
 
-        if platform.system() == 'Linux':
-            metadata['apt-packages'] = self.list_apt_packages().set_index('name').version.to_dict()
-        elif platform.system() == 'Darwin':
+        if platform.system() == "Linux":
+            metadata["apt-packages"] = (
+                self.list_apt_packages().set_index("name").version.to_dict()
+            )
+        elif platform.system() == "Darwin":
             try:
-                metadata['brew-packages'] = self.list_brew_packages().set_index('name').version.to_dict()
+                metadata["brew-packages"] = (
+                    self.list_brew_packages().set_index("name").version.to_dict()
+                )
             except Exception as err:
-                self.logger.error('Unable to establish brew packages used due to "{}"'.format(err))
+                self.logger.error(
+                    'Unable to establish brew packages used due to "{}"'.format(err)
+                )
         try:
-            metadata['python-packages'] = {k: str(getattr(v, '__version__', None))
-                                           for k, v in sys.modules.items()
-                                           if hasattr(v, '__version__') and not k.startswith('_')}
+            metadata["python-packages"] = {
+                k: str(getattr(v, "__version__", None))
+                for k, v in sys.modules.items()
+                if hasattr(v, "__version__") and not k.startswith("_")
+            }
         except Exception as err:
-            self.logger.error('Unable to establish python packages used due to "{}"'.format(err))
+            self.logger.error(
+                'Unable to establish python packages used due to "{}"'.format(err)
+            )
 
         if self.actions:
-            metadata['processing-actions'] = self.actions
+            metadata["processing-actions"] = self.actions
 
         return metadata
 
-    def save_as_json(self, filepath: Optional[Union[Path, str]] = None,
-                     data: Optional[dict] = None,
-                     additional_data: Optional[dict] = None,
-                     exists_action: str = 'merge',
-                     errors: str = 'warn'):
+    def save_as_json(
+        self,
+        filepath: Optional[Union[Path, str]] = None,
+        data: Optional[dict] = None,
+        additional_data: Optional[dict] = None,
+        exists_action: str = "merge",
+        errors: str = "warn",
+    ):
         """Save metadata in JSON format to disk with optional additional data.
 
         Parameters
@@ -306,29 +368,31 @@ class MetaData:
         data.update(additional_data or {})
 
         filepath = Path(filepath or self.filepath)
-        filename = str(filepath).replace('/', os.sep)  # protect from py35 Path -> str bug on Windows
+        filename = str(filepath).replace("/", os.sep)  # protect from py35 Path -> str bug on Windows
 
         if filepath.exists():
-            if exists_action == 'merge':
+            if exists_action == "merge":
                 with open(filename) as f:
                     try:
                         original_data = json.loads(f.read())
                     except JSONDecodeError as err:
                         original_data = {}
-                        if errors == 'warn':
-                            warnings.warn('Error decoding JSON data for "{}" due to {}'
-                                          ''.format(filepath, err))
-                        elif errors == 'raise':
+                        if errors == "warn":
+                            warnings.warn(
+                                'Error decoding JSON data for "{}" due to {}'
+                                "".format(filepath, err)
+                            )
+                        elif errors == "raise":
                             raise
 
-                if 'stages' in original_data:
+                if "stages" in original_data:
                     # extend stages list with new JSON metadata
-                    data = original_data['stages'] + [data]
+                    data = original_data["stages"] + [data]
                 else:
                     # create new top-level stages key with list of JSON metadata
-                    data = {'stages': [original_data, data]}
-            elif exists_action == 'raise_error':
-                raise FileExistsError('{filepath} already exists'.format(**locals()))
+                    data = {"stages": [original_data, data]}
+            elif exists_action == "raise_error":
+                raise FileExistsError("{filepath} already exists".format(**locals()))
 
-        with open(filename, 'w') as f:
+        with open(filename, "w") as f:
             f.write(json.dumps(data, **get_json_dumps_kwargs(json)))

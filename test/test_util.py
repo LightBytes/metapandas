@@ -1,6 +1,6 @@
 from metapandas import util
 from unittest.mock import Mock, patch
-from contextlib import redirect_stdout
+from contextlib import redirect_stdout, redirect_stderr
 from metapandas import config
 from io import StringIO
 
@@ -92,19 +92,28 @@ def test_snake_case_lower_camel():
     assert snake == 'this_is_a_string_with_upper_camel_case'
 
 
-def test_vprint_VERBOSE():
+def testvprint_VERBOSE():
     config.VERBOSE = True
     stream = StringIO()
     assert not stream.getvalue()
     with redirect_stdout(stream):
-        util._vprint('Hello world', end='')
+        util.vprint('Hello world', end='')
     assert stream.getvalue() == 'Hello world'
 
 
-def test_vprint_not_VERBOSE():
+def testvprint_not_VERBOSE():
     config.VERBOSE = False
     stream = StringIO()
     assert not stream.getvalue()
     with redirect_stdout(stream):
-        util._vprint('Hello world', end='')
+        util.vprint('Hello world', end='')
     assert not stream.getvalue()
+
+
+def test_verr_VERBOSE():
+    config.VERBOSE = True
+    stream = StringIO()
+    assert not stream.getvalue()
+    with redirect_stderr(stream):
+        util.verr('Hello world', end='')
+    assert stream.getvalue() == 'Hello world'

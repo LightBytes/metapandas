@@ -1,5 +1,6 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
+# type: ignore
 """Setup script for package."""
 import os
 import sys
