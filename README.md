@@ -1,7 +1,9 @@
+<!--lint disable no-inline-padding-->
+
+![ ](https://github.com/LightBytes/metapandas/raw/master/docs/source/static/metapandas_social.png)
+
 # metapandas
 Track metadata when using pandas via JSON.
-
-<!--lint disable no-inline-padding-->
 
 [![ ](https://github.com/LightBytes/metapandas/workflows/Python%20CI/badge.svg)](https://github.com/LightBytes/metapandas/actions?query=workflow%3A"Python+CI")
 [![ ](https://img.shields.io/pypi/pyversions/metapandas.svg?logo=python)](https://pypi.org/pypi/metapandas/)
