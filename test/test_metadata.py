@@ -1,6 +1,7 @@
 import unittest
 import logging
 import json
+import platform
 
 import pandas as pd
 
@@ -168,8 +169,12 @@ def test_get_metadata():
     assert isinstance(data['cpu-threads'], int)
     assert 'system' in data
     assert isinstance(data['system'], str)
-    assert 'cpu' in data
-    assert isinstance(data['cpu'], str)
+
+    # NOTE: only check for cpu details when not on Windows
+    # as it requires elevated user permissions
+    if platform.system() != 'Windows': 
+        assert 'cpu' in data
+        assert isinstance(data['cpu'], str)
 
 
 def test_register_action():
