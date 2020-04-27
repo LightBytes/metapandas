@@ -182,4 +182,17 @@ please can the following areas be considered before submitting a PR for review:
 
 ## License
 
-Released under MIT license.
+Released under the MIT license.
+
+## TODO
+
+This package is mostly a proof of concept and as such there are a number of
+areas to add to, fix and improve. Of these, the following are considered to
+be of highest importance:
+
+1. Track pandas operations such as merge, groupby, etc. within metadata (**BIG TASK**) 
+2. Add user friendly documentation
+3. Automated semantic versioning
+4. Automated master branch update release to PyPI
+5. More extensive testing
+6. Improve code coverage to > 90% (strech: > 95%)
