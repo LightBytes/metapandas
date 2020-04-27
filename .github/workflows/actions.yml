@@ -76,9 +76,11 @@ jobs:
       - uses: jpetrucciani/bandit-check@master
         with:
           path: 'metapandas'
-      - name: Install pre-requisites
-        run: python3 -m pip install lxml
-      - uses: jpetrucciani/mypy-check@master
+      - name: Install mypy pre-requisites
+        run: python3 -m pip install lxml mypy
+      - name: mypy-check
+        run: mypy .
+
   deploy:
     runs-on: ubuntu-latest
     steps:

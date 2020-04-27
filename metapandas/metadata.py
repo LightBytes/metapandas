@@ -66,9 +66,9 @@ class MetaData:
         self.logger = logger or logging.getLogger(__file__)
         self.filepath = filepath
         self.__dict__.update(kwargs)
-        self.actions = defaultdict(  # type: Dict[str, Any]
+        self.actions = defaultdict(
             lambda: defaultdict(lambda: defaultdict(lambda: "")), {}
-        )
+        )  # type: Dict[str, Any]
 
     @staticmethod
     def _list_packages(
