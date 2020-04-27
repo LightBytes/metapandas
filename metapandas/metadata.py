@@ -242,7 +242,7 @@ class MetaData:
         dict
             Dictionary of metadata information.
         """
-        metadata: Dict[str, Any] = {
+        metadata = {
             "os": platform.system(),
             "created-by": getpass.getuser().capitalize(),
             "created-timestamp": str(datetime.datetime.now()),
@@ -251,7 +251,7 @@ class MetaData:
             "python-version": platform.python_version(),
             "python-implementation": platform.python_implementation(),
             "python-command": " ".join(sys.argv),
-        }
+        }  # type: Dict[str, Any]
 
         if psutil:
             metadata.update(
