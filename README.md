@@ -195,4 +195,4 @@ be of highest importance:
 3. Automated semantic versioning
 4. Automated master branch update release to PyPI
 5. More extensive testing
-6. Improve code coverage to > 90% (strech: > 95%)
+6. Improve code coverage to > 90% (stretch: > 95%)
