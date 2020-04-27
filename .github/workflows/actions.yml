@@ -13,8 +13,7 @@ jobs:
       fail-fast: false
       matrix:
         os: [ubuntu-latest, macos-latest, windows-latest]
-        python-version: [3.5]
-        #python-version: [3.5, 3.6, 3.7, 3.8]
+        python-version: [3.5, 3.6, 3.7, 3.8]
         exclude:
           - os: macos-latest
             python-version: 3.5
@@ -26,11 +25,13 @@ jobs:
             python-version: pypy3
           - os: windows-latest
             python-version: 3.5
-          - os: macos-latest
+          - os: windows-latest
             python-version: 3.6
-          - os: macos-latest
+          - os: windows-latest
             python-version: 3.8
           - os: macos-latest
+            python-version: pypy3
+          - os: windows-latest
             python-version: pypy3
     steps:
       - uses: actions/checkout@v2
@@ -72,12 +73,14 @@ jobs:
   checks:
     runs-on: ubuntu-latest
     steps:
+      - uses: actions/checkout@v2
       - uses: jpetrucciani/bandit-check@master
         with:
-          path: '.'
-      - uses: jpetrucciani/mypy-check@master
-        with:
-          path: '.'
+          path: 'metapandas'
+      - name: Install mypy pre-requisites
+        run: python3 -m pip install lxml mypy
+      - name: mypy-check
+        run: python3 -m mypy .
 
   deploy:
     runs-on: ubuntu-latest

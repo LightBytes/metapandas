@@ -15,5 +15,5 @@ from metapandas.hooks.pandas import (
     read_pickle,
     read_sql,
     read_sql_table,
-    read_sql_query
+    read_sql_query,
 )

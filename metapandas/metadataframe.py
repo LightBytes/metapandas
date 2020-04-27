@@ -18,7 +18,7 @@ class MetaDataFrame(pd.DataFrame):
      'kwargs': {'columns': ['a', 'b', 'c']}}}
     """
 
-    _metadata = ['metadata']  # lists properites which should be passed to copies
+    _metadata = ["metadata"]  # lists properites which should be passed to copies
 
     def __init__(self, *args, **kwargs):
         """Wrap the pd.DataFrame.__init__ function.
@@ -29,22 +29,20 @@ class MetaDataFrame(pd.DataFrame):
         initialise the MetaDataFrame.metadata dictionary.
 
         """
-        metadata = kwargs.pop('metadata', {})
+        metadata = kwargs.pop("metadata", {})
         super(MetaDataFrame, self).__init__(*args, **kwargs)
-        metadata.update({
-            'constructor': {
-                'class': self.__class__,
-                'args': args,
-                'kwargs': kwargs
-            }
-        })
+        metadata.update(
+            {"constructor": {"class": self.__class__, "args": args, "kwargs": kwargs}}
+        )
         self.metadata = metadata
 
     @property
     def _constructor(self):
         """Internal pandas property for extending DataFrame construction."""
+
         def wrapper(*args, **kwargs):
             df = MetaDataFrame(*args, **kwargs)
             # call custom methods here
             return df
+
         return wrapper

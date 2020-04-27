@@ -4,7 +4,7 @@ import sys
 from typing import Optional
 from functools import partial
 
-from metapandas.util import _vprint, friendly_symbol_name, snake_case, mangle
+from metapandas.util import vprint, friendly_symbol_name, snake_case, mangle
 
 
 class HooksManager:
@@ -16,9 +16,15 @@ class HooksManager:
         return "_{}_INSTALLED".format(snake_case(cls.__name__).upper())
 
     @classmethod
-    def apply_hooks(cls, obj, decorator_function, hooks_dict,
-                    flag_var: Optional[str] = None,
-                    mangled_prefix: str = '', mangled_suffix: str = '_original') -> bool:
+    def apply_hooks(
+        cls,
+        obj,
+        decorator_function,
+        hooks_dict,
+        flag_var: Optional[str] = None,
+        mangled_prefix: str = "",
+        mangled_suffix: str = "_original",
+    ) -> bool:
         """Apply hooks to obj using decorator_function.
 
         Parameters
@@ -49,29 +55,49 @@ class HooksManager:
         applied = False
 
         def not_found(obj_name, method_name, decorator_function, *args, **kwargs):
-            raise AttributeError("Unable to decorate {obj_name}.{method_name} with {decorator_function}"
-                                 "".format(**locals()))
+            raise AttributeError(
+                "Unable to decorate {obj_name}.{method_name} with {decorator_function}"
+                "".format(**locals())
+            )
 
         if not getattr(obj, flag_var, None):
             for method_name, decorator_kwargs in hooks_dict.items():
                 obj_name = friendly_symbol_name(obj)
-                mangled_name = mangle(prefix=mangled_prefix, name=method_name, suffix=mangled_suffix)
+                mangled_name = mangle(
+                    prefix=mangled_prefix, name=method_name, suffix=mangled_suffix
+                )
                 if not hasattr(obj, method_name):
-                    _vprint("Unable to decorate {obj_name}.{method_name} with {decorator_function}"
-                            "".format(**locals()), file=sys.stderr)
-                original_func = getattr(obj, method_name, partial(not_found, obj_name,
-                                                                  method_name, decorator_function))
-                setattr(obj, method_name, decorator_function(original_func, **decorator_kwargs))
+                    vprint(
+                        "Unable to decorate {obj_name}.{method_name} with {decorator_function}"
+                        "".format(**locals()),
+                        file=sys.stderr,
+                    )
+                original_func = getattr(
+                    obj,
+                    method_name,
+                    partial(not_found, obj_name, method_name, decorator_function),
+                )
+                setattr(
+                    obj,
+                    method_name,
+                    decorator_function(original_func, **decorator_kwargs),
+                )
                 setattr(obj, mangled_name, original_func)
-                _vprint('Applied hook for {obj_name}.{method_name}'.format(**locals()))
+                vprint("Applied hook for {obj_name}.{method_name}".format(**locals()))
             # mark as installed
             setattr(obj, flag_var, True)
             applied = True
         return applied
 
     @classmethod
-    def remove_hooks(cls, obj, hooks_dict, flag_var: Optional[str] = None,
-                     mangled_prefix: str = '', mangled_suffix: str = '_original'):
+    def remove_hooks(
+        cls,
+        obj,
+        hooks_dict,
+        flag_var: Optional[str] = None,
+        mangled_prefix: str = "",
+        mangled_suffix: str = "_original",
+    ):
         """Remove hooks from obj.
 
         Parameters
@@ -98,12 +124,14 @@ class HooksManager:
         applied = False
         if getattr(obj, flag_var, None):
             for method_name in hooks_dict.keys():
-                mangled_name = mangle(prefix=mangled_prefix, name=method_name, suffix=mangled_suffix)
+                mangled_name = mangle(
+                    prefix=mangled_prefix, name=method_name, suffix=mangled_suffix
+                )
                 setattr(obj, method_name, getattr(obj, mangled_name))
                 try:
-                    delattr(obj, method_name + '_original')
+                    delattr(obj, method_name + "_original")
                 except AttributeError:
-                    setattr(obj, method_name + '_original', None)
+                    setattr(obj, method_name + "_original", None)
             # mark as uninstalled
             try:
                 delattr(obj, flag_var)
