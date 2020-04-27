@@ -18,7 +18,7 @@ yolk3k  # get status of development
 
 # linters
 autopep8
-black
+black; python_version >= "3.6"
 pylama
 pylint
 pyflakes<2.0.0
