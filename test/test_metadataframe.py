@@ -43,3 +43,13 @@ def test_MetaDataFrame_init_with_metadata_dict_specified():
     assert mdf.metadata['constructor']['args'] == ([[1, 2, 3]], )
     assert mdf.metadata['constructor']['kwargs'] == {'columns': ['a', 'b', 'c']}
     assert mdf.metadata['constructor']['class'] == MetaDataFrame
+
+
+def test_MetaDataFrame_copy():
+    mdf1 = MetaDataFrame([[1, 2, 3]], columns=list('abc'), metadata={'help': 'me'})
+    mdf2 = MetaDataFrame([[1, 2, 3]], columns=list('xyz'))
+    mdf = mdf1.merge(mdf2, left_on='a', right_on='x')
+
+    assert isinstance(mdf, MetaDataFrame)
+
+    # TODO: check merge includes metadata from mdf1 & 2?
