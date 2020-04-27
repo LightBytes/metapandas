@@ -77,9 +77,6 @@ jobs:
         with:
           path: 'metapandas'
       - uses: jpetrucciani/mypy-check@master
-        with:
-          path: '.'
-
   deploy:
     runs-on: ubuntu-latest
     steps:

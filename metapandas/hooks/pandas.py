@@ -179,8 +179,8 @@ class PandasMetaDataHooks(HooksManager):
             pd, pandas_read_with_metadata, cls.PANDAS_READ_HOOKS
         )
         applied_df_hooks = cls.apply_hooks(
-            pd.DataFrame,
-            pandas_save_with_metadata,  # type: ignore
+            pd.DataFrame,  # type: ignore
+            pandas_save_with_metadata,
             cls.PANDAS_DATAFRAME_SAVE_HOOKS,
         )
         if applied_pd_hooks or applied_df_hooks:
