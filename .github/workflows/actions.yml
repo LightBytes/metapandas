@@ -79,7 +79,7 @@ jobs:
       - name: Install mypy pre-requisites
         run: python3 -m pip install lxml mypy
       - name: mypy-check
-        run: mypy .
+        run: python3 -m mypy .
 
   deploy:
     runs-on: ubuntu-latest
