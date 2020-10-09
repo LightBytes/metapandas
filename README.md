@@ -1,5 +1,5 @@
 # metapandas
-Track metadata when using pandas via JSON.
+Track metadata when using pandas via JSON, utilising custom DataFrame hooks.
 
 <!--lint disable no-inline-padding-->
 
