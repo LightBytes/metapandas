@@ -70,6 +70,13 @@ jobs:
           name: codecov-umbrella
           fail_ci_if_error: false
 
+      - name: Upload coverage to Coveralls
+        run: |
+          COVERALLS_REPO_TOKEN=$COVERALLS_REPO_TOKEN coveralls
+        env:
+          COVERALLS_REPO_TOKEN: ${{ secrets.COVERALLS_REPO_TOKEN }}
+        shell: bash
+
   checks:
     runs-on: ubuntu-latest
     steps:
